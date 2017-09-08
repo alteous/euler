@@ -1,0 +1,2 @@
+# euler
+Opinionated mathematics library
