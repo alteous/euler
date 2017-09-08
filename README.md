@@ -5,6 +5,7 @@ An experimental and opinionated mathematics library for computer graphics.
 ## Project ideas
 
  * No distinction between 'point' and 'vector' types.
+ * No need to import traits for functionality.
  * GLSL-like constructors for vectors and matrices.
  * `vec3` is actually a `vec4` with a fixed zero `w` co-ordinate.
  * All angles are in radians.

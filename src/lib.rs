@@ -1,5 +1,3 @@
-#![allow(unused_macros)]
-
 #[macro_use]
 extern crate approx;
 extern crate cgmath;
@@ -11,11 +9,87 @@ use approx::ApproxEq;
 #[macro_use]
 mod macros;
 
+/// Translation + Rotation + Non-uniform Scale transform in 3D space.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Transform3 {
+    /// Translation vector.
+    pub translation: Vec3,
+
+    /// Rotation quaternion.
+    pub rotation: Quaternion,
+
+    /// *Non-uniform* scaling.
+    pub scale: Vec3,
+}
+
+impl Transform3 {
+    /// Returns the identity transform.
+    pub fn identity() -> Self {
+        Transform3 {
+            translation: vec3!(),
+            rotation: Quaternion::identity(),
+            scale: vec3!(1.0),
+        }
+    }
+
+    /// Returns the equivalent matrix representation for this transform.
+    pub fn matrix(&self) -> Mat4 {
+        let t = cgmath::Matrix4::from_translation(
+            cgmath::Vector3::new(
+                self.translation.x,
+                self.translation.y,
+                self.translation.z,
+            ),
+        );
+        let r = cgmath::Matrix4::from(
+            cgmath::Quaternion::new(
+                self.rotation.vector.x,
+                self.rotation.vector.y,
+                self.rotation.vector.z,
+                self.rotation.scalar,
+            ),
+        );
+        let s = cgmath::Matrix4::from_nonuniform_scale(
+            self.scale.x,
+            self.scale.y,
+            self.scale.z,
+        );
+        let matrix: [[f32; 4]; 4] = (t * r * s).into();
+        unsafe {
+            mem::transmute(matrix)
+        }
+    }
+}
+
+/// Quaternion in the order `[x, y, z, w]`, where `w` is the scalar.
+#[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
+pub struct Quaternion {
+    /// Vector part.
+    pub vector: Vec3,
+
+    /// Scalar part.
+    pub scalar: f32,
+}
+
+impl Quaternion {
+    /// Returns the identity quaternion.
+    pub fn identity() -> Self {
+        Quaternion {
+            scalar: 1.0,
+            vector: vec3!(),
+        }
+    }
+}
+
 /// 2D vector.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Vec2 {
+    /// X co-ordinate.
     pub x: f32,
+
+    /// Y co-ordinate.
     pub y: f32,
 }
 
@@ -27,9 +101,16 @@ pub struct Vec2 {
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Vec3 {
+    /// X co-ordinate.
     pub x: f32,
+
+    /// Y co-ordinate.
     pub y: f32,
+
+    /// Z co-ordinate.
     pub z: f32,
+
+    /// Homogeneous W co-ordinate - always `1.0` for 3D vectors.
     #[doc(hidden)]
     pub w: f32,
 }
@@ -38,9 +119,16 @@ pub struct Vec3 {
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Vec4 {
+    /// X co-ordinate.
     pub x: f32,
+
+    /// Y co-ordinate.
     pub y: f32,
+
+    /// Z co-ordinate.
     pub z: f32,
+
+    /// Homogeneous W co-ordinate.
     pub w: f32,
 }
 
@@ -57,6 +145,7 @@ pub struct Mat2 {
 
 /// 3x3 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
 pub struct Mat3 {
     pub m00: f32,
     pub m01: f32,
@@ -73,6 +162,7 @@ pub struct Mat3 {
 
 /// 4x4 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
+#[repr(C)]
 pub struct Mat4 {
     pub m00: f32,
     pub m01: f32,
@@ -330,6 +420,14 @@ impl AsRef<[[f32; 3]; 3]> for Mat3 {
 
 impl AsRef<[[f32; 4]; 4]> for Mat4 {
     fn as_ref(&self) -> &[[f32; 4]; 4] {
+        unsafe {
+            mem::transmute(self)
+        }
+    }
+}
+
+impl AsRef<[f32; 4]> for Quaternion {
+    fn as_ref(&self) -> &[f32; 4] {
         unsafe {
             mem::transmute(self)
         }
