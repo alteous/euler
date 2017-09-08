@@ -1,8 +1,12 @@
 #![allow(unused_macros)]
 
+#[macro_use]
+extern crate approx;
 extern crate cgmath;
 
-use std::mem;
+use std::{mem, ops};
+
+use approx::ApproxEq;
 
 #[macro_use]
 mod macros;
@@ -89,6 +93,205 @@ pub struct Mat4 {
     pub m31: f32,
     pub m32: f32,
     pub m33: f32,
+}
+
+impl ApproxEq for Vec2 {
+    type Epsilon = <f32 as ApproxEq>::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_epsilon()
+    }
+
+    fn default_max_relative() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_max_relative()
+    }
+
+    fn default_max_ulps() -> u32 {
+        <f32 as ApproxEq>::default_max_ulps()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        <f32 as ApproxEq>::relative_eq(&self.x, &other.x, epsilon, max_relative)
+            &&
+        <f32 as ApproxEq>::relative_eq(&self.y, &other.y, epsilon, max_relative)
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        <f32 as ApproxEq>::ulps_eq(&self.x, &other.x, epsilon, max_ulps)
+            &&
+        <f32 as ApproxEq>::ulps_eq(&self.y, &other.y, epsilon, max_ulps)
+    }
+}
+
+impl ops::Add<f32> for Vec2 {
+    type Output = Vec2;
+    fn add(self, rhs: f32) -> Self::Output {
+        Vec2 {
+            x: self.x + rhs,
+            y: self.y + rhs,
+        }
+    }
+}
+
+impl ops::Sub<f32> for Vec2 {
+    type Output = Vec2;
+    fn sub(self, rhs: f32) -> Self::Output {
+        Vec2 {
+            x: self.x - rhs,
+            y: self.y - rhs,
+        }
+    }
+}
+
+impl ops::Add<Vec2> for Vec2 {
+    type Output = Vec2;
+    fn add(self, rhs: Vec2) -> Self::Output {
+        Vec2 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl ops::Sub<Vec2> for Vec2 {
+    type Output = Vec2;
+    fn sub(self, rhs: Vec2) -> Self::Output {
+        Vec2 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+        }
+    }
+}
+
+impl ApproxEq for Vec3 {
+    type Epsilon = <f32 as ApproxEq>::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_epsilon()
+    }
+
+    fn default_max_relative() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_max_relative()
+    }
+
+    fn default_max_ulps() -> u32 {
+        <f32 as ApproxEq>::default_max_ulps()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        <f32 as ApproxEq>::relative_eq(&self.x, &other.x, epsilon, max_relative)
+            &&
+        <f32 as ApproxEq>::relative_eq(&self.y, &other.y, epsilon, max_relative)
+            &&
+        <f32 as ApproxEq>::relative_eq(&self.z, &other.z, epsilon, max_relative)
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        <f32 as ApproxEq>::ulps_eq(&self.x, &other.x, epsilon, max_ulps)
+            &&
+        <f32 as ApproxEq>::ulps_eq(&self.y, &other.y, epsilon, max_ulps)
+            &&
+        <f32 as ApproxEq>::ulps_eq(&self.z, &other.z, epsilon, max_ulps)
+    }
+}
+
+impl ops::Add<f32> for Vec3 {
+    type Output = Vec3;
+    fn add(self, rhs: f32) -> Self::Output {
+        Vec3 {
+            x: self.x + rhs,
+            y: self.y + rhs,
+            z: self.z + rhs,
+            w: 0.0,
+        }
+    }
+}
+    
+impl ops::Sub<f32> for Vec3 {
+    type Output = Vec3;
+    fn sub(self, rhs: f32) -> Self::Output {
+        Vec3 {
+            x: self.x - rhs,
+            y: self.y - rhs,
+            z: self.z - rhs,
+            w: 0.0,
+        }
+    }
+}
+
+impl ops::Add<Vec3> for Vec3 {
+    type Output = Vec3;
+    fn add(self, rhs: Vec3) -> Self::Output {
+        Vec3 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+            w: 0.0,
+        }
+    }
+}
+
+impl ops::Sub<Vec3> for Vec3 {
+    type Output = Vec3;
+    fn sub(self, rhs: Vec3) -> Self::Output {
+        Vec3 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+            w: 0.0,
+        }
+    }
+}
+
+impl ApproxEq for Vec4 {
+    type Epsilon = <f32 as ApproxEq>::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_epsilon()
+    }
+
+    fn default_max_relative() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_max_relative()
+    }
+
+    fn default_max_ulps() -> u32 {
+        <f32 as ApproxEq>::default_max_ulps()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        <f32 as ApproxEq>::relative_eq(&self.x, &other.x, epsilon, max_relative)
+            &&
+        <f32 as ApproxEq>::relative_eq(&self.y, &other.y, epsilon, max_relative)
+            &&
+        <f32 as ApproxEq>::relative_eq(&self.z, &other.z, epsilon, max_relative)
+            &&
+        <f32 as ApproxEq>::relative_eq(&self.w, &other.w, epsilon, max_relative)
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        <f32 as ApproxEq>::ulps_eq(&self.x, &other.x, epsilon, max_ulps)
+            &&
+        <f32 as ApproxEq>::ulps_eq(&self.y, &other.y, epsilon, max_ulps)
+            &&
+        <f32 as ApproxEq>::ulps_eq(&self.z, &other.z, epsilon, max_ulps)
+            &&
+        <f32 as ApproxEq>::ulps_eq(&self.w, &other.w, epsilon, max_ulps)
+    }
 }
 
 impl From<Vec3> for Vec2 {
@@ -288,6 +491,64 @@ mod tests {
     }
 
     #[test]
+    fn vec2_relative_eq() {
+        assert_relative_eq!(vec2!(1.0, 2.0), vec2!(1.0, 2.0));
+        assert_relative_ne!(vec2!(1.0, 2.0), vec2!(1.0, 2.1));
+    }
+
+    #[test]
+    fn vec2_plus_scalar() {
+        assert_relative_eq!(vec2!(2.2, 4.4), vec2!(1.2, 3.4) + 1.0);
+    }
+
+    #[test]
+    fn vec2_minus_scalar() {
+        assert_relative_eq!(vec2!(0.2, 2.4), vec2!(2.2, 4.4) - 2.0);
+    }
+
+    #[test]
+    fn vec2_plus_vec2() {
+        assert_relative_eq!(vec2!(1.6, 4.0), vec2!(1.2, 3.4) + vec2!(0.4, 0.6));
+    }
+
+    #[test]
+    fn vec2_minus_vec2() {
+        assert_relative_eq!(vec2!(), vec2!(2.2, 4.4) - vec2!(2.2, 4.4));
+    }
+
+    #[test]
+    fn vec3_relative_eq() {
+        assert_relative_eq!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.0));
+        assert_relative_ne!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.1));
+    }
+
+    #[test]
+    fn vec3_plus_scalar() {
+        assert_relative_eq!(vec3!(2.2, 4.4, 6.6), vec3!(1.2, 3.4, 5.6) + 1.0);
+    }
+
+    #[test]
+    fn vec3_minus_scalar() {
+        assert_relative_eq!(vec3!(0.2, 2.4, 4.6), vec3!(1.2, 3.4, 5.6) - 1.0);
+    }
+
+    #[test]
+    fn vec3_plus_vec3() {
+        assert_relative_eq!(
+            vec3!(2.2, 5.4, 8.6),
+            vec3!(1.2, 3.4, 5.6) + vec3!(1.0, 2.0, 3.0)
+        );
+    }
+
+    #[test]
+    fn vec3_minus_vec3() {
+        assert_relative_eq!(
+            vec3!(0.2, 1.4, 2.6),
+            vec3!(1.2, 3.4, 5.6) - vec3!(1.0, 2.0, 3.0)
+        );
+    }
+
+    #[test]
     fn vec2_macro_empty() {
         let zero = vec2!();
         assert_eq!(zero.as_ref(), &[0.0, 0.0]);
@@ -364,5 +625,11 @@ mod tests {
         let vec3 = vec3!(1.2, 3.4, 5.6);
         let vec4 = vec4!(vec3, 7.8);
         assert_eq!(vec4.as_ref(), &[1.2, 3.4, 5.6, 7.8]);
+    }
+
+    #[test]
+    fn vec4_relative_eq() {
+        assert_relative_eq!(vec4!(1.0, 2.0, 3.0, 1.0), vec4!(1.0, 2.0, 3.0, 1.0));
+        assert_relative_ne!(vec4!(1.0, 2.0, 3.0, 1.0), vec4!(1.0, 2.0, 3.0, 0.0));
     }
 }

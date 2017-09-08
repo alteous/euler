@@ -9,6 +9,7 @@ An experimental and opinionated mathematics library for computer graphics.
  * `vec3` is actually a `vec4` with a fixed zero `w` co-ordinate.
  * All angles are in radians.
  * All types are base `f32`.
+ * Adding two homogeneous 4D vectors is not allowed.
 
 ## License agreement
 

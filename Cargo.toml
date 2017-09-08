@@ -4,4 +4,5 @@ version = "0.1.0"
 authors = ["David Harvey-Macaulay <alteous@outlook.com>"]
 
 [dependencies]
-cgmath = { version = "0.15" }
+approx = "0.1.1"
+cgmath = "0.15"
