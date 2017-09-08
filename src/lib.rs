@@ -19,7 +19,7 @@ pub struct Vec2 {
 ///
 /// # Note
 ///
-/// The representation is a homogeneous 3D vector with a fixed `w` value of 1.0.
+/// The representation is a homogeneous 3D vector with a fixed `w` value of 0.0.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Vec3 {
@@ -105,7 +105,7 @@ impl From<Vec4> for Vec2 {
 
 impl From<Vec4> for Vec3 {
     fn from(vec4: Vec4) -> Vec3 {
-        Vec3 { x: vec4.x, y: vec4.y, z: vec4.z, w: 1.0 }
+        Vec3 { x: vec4.x, y: vec4.y, z: vec4.z, w: 0.0 }
     }
 }
 
@@ -157,18 +157,21 @@ mod tests {
     fn vec3_macro_zeros() {
         let zeros = vec3!();
         assert_eq!(zeros.as_ref(), &[0.0, 0.0, 0.0]);
+        assert_eq!(zeros.w, 0.0);
     }
 
     #[test]
     fn vec3_macro_ones() {
         let ones = vec3!(1.0);
         assert_eq!(ones.as_ref(), &[1.0, 1.0, 1.0]);
+        assert_eq!(ones.w, 0.0);
     }
 
     #[test]
     fn vec3_macro_full() {
         let full = vec3!(1.2, 3.4, 5.6);
         assert_eq!(full.as_ref(), &[1.2, 3.4, 5.6]);
+        
     }
 
     #[test]
@@ -176,6 +179,7 @@ mod tests {
         let vec2 = vec2!(1.2, 3.4);
         let vec3 = vec3!(vec2, 5.6);
         assert_eq!(vec3.as_ref(), &[1.2, 3.4, 5.6]);
+        assert_eq!(vec3.w, 0.0);
     }
 
     #[test]

@@ -73,11 +73,11 @@ macro_rules! vec2 {
 #[macro_export]
 macro_rules! vec3 {
     () => {
-        $crate::Vec3 { x: 0.0, y: 0.0, z: 0.0, w: 1.0 }
+        $crate::Vec3 { x: 0.0, y: 0.0, z: 0.0, w: 0.0 }
     };
 
     ($xyz:expr) => {
-        $crate::Vec3 { x: $xyz, y: $xyz, z: $xyz, w: 1.0 }
+        $crate::Vec3 { x: $xyz, y: $xyz, z: $xyz, w: 0.0 }
     };
     
     ($xy:expr, $z:expr) => {
@@ -85,12 +85,12 @@ macro_rules! vec3 {
             x: $crate::Vec2::from($xy).x,
             y: $crate::Vec2::from($xy).y,
             z: $z,
-            w: 1.0,
+            w: 0.0,
         }
     };
 
     ($x:expr, $y:expr, $z:expr) => {
-        $crate::Vec3 { x: $x, y: $y, z: $z, w: 1.0 }
+        $crate::Vec3 { x: $x, y: $y, z: $z, w: 0.0 }
     };
 }
 

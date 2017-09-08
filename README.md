@@ -7,7 +7,7 @@ An experimental and opinionated mathematics library for computer graphics.
  * No distinction between 'point' and 'vector' types.
  * GLSL-like constructors for vectors and matrices.
  * `vec3` is actually a `vec4` with a fixed zero `w` co-ordinate.
- * All units are in radians. Let the user convert as necessary.
+ * All angles are in radians.
  * All types are base `f32`.
 
 ## License agreement
