@@ -1,3 +1,5 @@
+extern crate cgmath;
+
 #[cfg(test)]
 mod tests {
     #[test]
