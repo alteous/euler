@@ -1,12 +1,47 @@
-/// 2x2 macro constructor.
+/// 2x2 matrix macro constructor.
 ///
 /// # Examples
 ///
 /// Identity
 ///
 /// ```rust,ignore
-/// let identity = mat2!();
-/// assert_eq!(identity.as_ref(), &[1.0, 0.0, 1.0, 0.0]);
+/// let empty = mat2!();
+/// assert_eq!(
+///     empty.as_ref(),
+///     &[
+///         [1.0, 0.0],
+///         [0.0, 1.0],
+///     ]
+/// );
+/// ```
+///
+/// Diagonal
+///
+/// ```rust,ignore
+/// let single = mat2!(2.0);
+/// assert_eq!(
+///     single.as_ref(),
+///     &[
+///         [2.0, 0.0],
+///         [0.0, 2.0],
+///     ]
+/// );
+/// ```
+///
+/// Full
+///
+/// ```rust,ignore
+/// let full = mat2!(
+///     1.2, 3.4,
+///     5.6, 7.8,
+/// );
+/// assert_eq!(
+///     full.as_ref(),
+///     &[
+///         [1.2, 3.4],
+///         [5.6, 7.8],
+///     ]
+/// );
 /// ```
 #[macro_export]
 macro_rules! mat2 {
@@ -35,6 +70,55 @@ macro_rules! mat2 {
     };
 }
 
+/// 3x3 matrix macro constructor.
+///
+/// # Examples
+///
+/// Identity
+///
+/// ```rust,ignore
+/// let empty = mat3!();
+/// assert_eq!(
+///     empty.as_ref(),
+///     &[
+///         [1.0, 0.0, 0.0],
+///         [0.0, 1.0, 0.0],
+///         [0.0, 0.0, 1.0],
+///     ]
+/// );
+/// ```
+///
+/// Diagonal
+///
+/// ```rust,ignore
+/// let single = mat3!(2.0);
+/// assert_eq!(
+///     single.as_ref(),
+///     &[
+///         [2.0, 0.0, 0.0],
+///         [0.0, 2.0, 0.0],
+///         [0.0, 0.0, 2.0],
+///     ]
+/// );
+/// ```
+///
+/// Full
+///
+/// ```rust,ignore
+/// let full = mat3!(
+///     0.1, 0.2, 0.3,
+///     0.4, 0.5, 0.6,
+///     0.7, 0.8, 0.9,
+/// );
+/// assert_eq!(
+///     full.as_ref(),
+///     &[
+///         [0.1, 0.2, 0.3],
+///         [0.4, 0.5, 0.6],
+///         [0.7, 0.8, 0.9],
+///     ]
+/// );
+/// ```
 #[macro_export]
 macro_rules! mat3 {
     () => {
@@ -66,6 +150,59 @@ macro_rules! mat3 {
     };
 }
 
+/// 4x4 matrix macro constructor.
+///
+/// # Examples
+///
+/// Identity
+///
+/// ```rust,ignore
+/// let empty = mat4!();
+/// assert_eq!(
+///     empty.as_ref(),
+///     &[
+///          [1.0, 0.0, 0.0, 0.0],
+///          [0.0, 1.0, 0.0, 0.0],
+///          [0.0, 0.0, 1.0, 0.0],
+///          [0.0, 0.0, 0.0, 1.0],
+///     ]
+/// );
+/// ```
+///
+/// Diagonal
+///
+/// ```rust,ignore
+/// let single = mat4!(2.0);
+/// assert_eq!(
+///     single.as_ref(),
+///     &[
+///         [2.0, 0.0, 0.0, 0.0],
+///         [0.0, 2.0, 0.0, 0.0],
+///         [0.0, 0.0, 2.0, 0.0],
+///         [0.0, 0.0, 0.0, 2.0],
+///     ]
+/// );
+/// ```
+///
+/// Full
+///
+/// ```rust,ignore
+/// let full = mat4!(
+///     0.1, 0.2, 0.3, 0.4,
+///     0.5, 0.6, 0.7, 0.8,
+///     0.9, 1.0, 1.1, 1.2,
+///     1.3, 1.4, 1.5, 1.6,
+/// );
+/// assert_eq!(
+///     full.as_ref(),
+///     &[
+///         [0.1, 0.2, 0.3, 0.4],
+///         [0.5, 0.6, 0.7, 0.8],
+///         [0.9, 1.0, 1.1, 1.2],
+///         [1.3, 1.4, 1.5, 1.6],
+///     ]
+/// );
+/// ```
 #[macro_export]
 macro_rules! mat4 {
     () => {
