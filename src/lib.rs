@@ -109,6 +109,30 @@ impl From<Vec4> for Vec3 {
     }
 }
 
+impl AsRef<[[f32; 2]; 2]> for Mat2 {
+    fn as_ref(&self) -> &[[f32; 2]; 2] {
+        unsafe {
+            mem::transmute(self)
+        }
+    }
+}
+
+impl AsRef<[[f32; 3]; 3]> for Mat3 {
+    fn as_ref(&self) -> &[[f32; 3]; 3] {
+        unsafe {
+            mem::transmute(self)
+        }
+    }
+}
+
+impl AsRef<[[f32; 4]; 4]> for Mat4 {
+    fn as_ref(&self) -> &[[f32; 4]; 4] {
+        unsafe {
+            mem::transmute(self)
+        }
+    }
+}
+
 impl AsRef<[f32; 2]> for Vec2 {
     fn as_ref(&self) -> &[f32; 2] {
         unsafe {
@@ -135,6 +159,134 @@ impl AsRef<[f32; 4]> for Vec4 {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn mat2_macro_empty() {
+        let empty = mat2!();
+        assert_eq!(
+            empty.as_ref(),
+            &[
+                [1.0, 0.0],
+                [0.0, 1.0],
+            ]
+        );
+    }
+
+    #[test]
+    fn mat2_macro_single() {
+        let single = mat2!(2.0);
+        assert_eq!(
+            single.as_ref(),
+            &[
+                [2.0, 0.0],
+                [0.0, 2.0],
+            ]
+        );
+    }
+
+    #[test]
+    fn mat2_macro_full() {
+        let full = mat2!(
+            1.2, 3.4,
+            5.6, 7.8,
+        );
+        assert_eq!(
+            full.as_ref(),
+            &[
+                [1.2, 3.4],
+                [5.6, 7.8],
+            ]
+        );
+    }
+
+    #[test]
+    fn mat3_macro_empty() {
+        let empty = mat3!();
+        assert_eq!(
+            empty.as_ref(),
+            &[
+                [1.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0],
+                [0.0, 0.0, 1.0],
+            ]
+        );
+    }
+    #[test]
+    fn mat3_macro_single() {
+        let single = mat3!(2.0);
+        assert_eq!(
+            single.as_ref(),
+            &[
+                [2.0, 0.0, 0.0],
+                [0.0, 2.0, 0.0],
+                [0.0, 0.0, 2.0],
+            ]
+        );
+    }
+
+    #[test]
+    fn mat3_macro_full() {
+        let full = mat3!(
+            0.1, 0.2, 0.3,
+            0.4, 0.5, 0.6,
+            0.7, 0.8, 0.9,
+        );
+        assert_eq!(
+            full.as_ref(),
+            &[
+                [0.1, 0.2, 0.3],
+                [0.4, 0.5, 0.6],
+                [0.7, 0.8, 0.9],
+            ]
+        );
+    }
+
+    #[test]
+    fn mat4_macro_empty() {
+        let empty = mat4!();
+        assert_eq!(
+            empty.as_ref(),
+            &[
+                [1.0, 0.0, 0.0, 0.0],
+                [0.0, 1.0, 0.0, 0.0],
+                [0.0, 0.0, 1.0, 0.0],
+                [0.0, 0.0, 0.0, 1.0],
+            ]
+        );
+    }
+
+    #[test]
+    fn mat4_macro_single() {
+        let single = mat4!(2.0);
+        assert_eq!(
+            single.as_ref(),
+            &[
+                [2.0, 0.0, 0.0, 0.0],
+                [0.0, 2.0, 0.0, 0.0],
+                [0.0, 0.0, 2.0, 0.0],
+                [0.0, 0.0, 0.0, 2.0],
+            ]
+        );
+    }
+
+    #[test]
+    fn mat4_macro_full() {
+        let full = mat4!(
+            0.1, 0.2, 0.3, 0.4,
+            0.5, 0.6, 0.7, 0.8,
+            0.9, 1.0, 1.1, 1.2,
+            1.3, 1.4, 1.5, 1.6,
+        );
+        assert_eq!(
+            full.as_ref(),
+            &[
+                [0.1, 0.2, 0.3, 0.4],
+                [0.5, 0.6, 0.7, 0.8],
+                [0.9, 1.0, 1.1, 1.2],
+                [1.3, 1.4, 1.5, 1.6],
+            ]
+        );
+    }
+
     #[test]
     fn vec2_macro_empty() {
         let zero = vec2!();
