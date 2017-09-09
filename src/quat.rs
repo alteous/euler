@@ -1,7 +1,8 @@
 use cgmath;
+use mint;
 use std::mem;
 
-use cgmath::Rotation3;
+use cgmath::{InnerSpace, Rotation3};
 use Vec3;
 
 /// Quaternion in the order `[x, y, z, w]`, where `w` is the scalar.
@@ -24,19 +25,16 @@ impl Quat {
         }
     }
 
-    /// Returns the quaternion representation of a rotation around the X axis.
-    pub fn xrot(angle: f32) -> Self {
-        cgmath::Quaternion::from_angle_x(cgmath::Rad(angle)).into()
-    }
-
-    /// Returns the quaternion representation of a rotation around the Y axis.
-    pub fn yrot(angle: f32) -> Self {
-        cgmath::Quaternion::from_angle_y(cgmath::Rad(angle)).into()
-    }
-
-    /// Returns the quaternion representation of a rotation around the Z axis.
-    pub fn zrot(angle: f32) -> Self {
-        cgmath::Quaternion::from_angle_z(cgmath::Rad(angle)).into()
+    /// Returns a quaternion representing a rotation by `r` radians about `axis`.
+    pub fn rotation_about_axis(axis: Vec3, r: f32) -> Self {
+        let q = cgmath::Quaternion::from_axis_angle(
+            cgmath::Vector3::new(axis.x, axis.y, axis.z).normalize(),
+            cgmath::Rad(r),
+        );
+        Quat {
+            vector: vec3!(q.v.x, q.v.y, q.v.z),
+            scalar: q.s,
+        }
     }
 }
 
@@ -45,12 +43,6 @@ impl AsRef<[f32; 4]> for Quat {
         unsafe {
             mem::transmute(self)
         }
-    }
-}
-
-impl From<cgmath::Quaternion<f32>> for Quat {
-    fn from(q: cgmath::Quaternion<f32>) -> Self {
-        quat!(q.s; q.v.x, q.v.y, q.v.z)
     }
 }
 
@@ -69,25 +61,20 @@ impl Into<[f32; 4]> for Quat {
     }
 }
 
-#[cfg(feature = "mint-support")]
-mod mint_support {
-    use mint;
-    use super::Quat;
-
-    #[cfg(feature = "mint-support")]
-    impl From<mint::Quaternion<f32>> for Quat {
-        fn from(q: mint::Quaternion<f32>) -> Self {
-            quat!(q.s; q.v.x, q.v.y, q.v.z)
+impl From<mint::Quaternion<f32>> for Quat {
+    fn from(q: mint::Quaternion<f32>) -> Self {
+        Quat {
+            vector: vec3!(q.v.x, q.v.y, q.v.z),
+            scalar: q.s,
         }
     }
+}
 
-    #[cfg(feature = "mint-support")]
-    impl Into<mint::Quaternion<f32>> for Quat {
-        fn into(self) -> mint::Quaternion<f32> {
-            mint::Quaternion {
-                s: self.scalar,
-                v: self.vector.into(),
-            }
+impl Into<mint::Quaternion<f32>> for Quat {
+    fn into(self) -> mint::Quaternion<f32> {
+        mint::Quaternion {
+            s: self.scalar,
+            v: self.vector.into(),
         }
     }
 }

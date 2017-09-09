@@ -1,4 +1,5 @@
 use cgmath;
+use mint;
 use std::{mem, ops};
 
 use approx::ApproxEq;
@@ -18,9 +19,37 @@ impl Mat2 {
 
     /// Computes the inverse of this matrix.
     ///
-    /// Returns `None` is the matrix has no inverse, i.e. has a zero determinant.
-    pub fn invert(self) -> Option<Mat2> {
-        self.0.invert().map(|m| m.into())
+    /// # Panics
+    ///
+    /// Panics if the matrix is not invertible.
+    pub fn invert(self) -> Mat2 {
+        self.try_invert().unwrap()
+    }
+
+    /// Computes the inverse of this matrix, returning `None` if non-invertible.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// # #[macro_use] extern crate euler;
+    /// # fn main() {
+    /// let m = mat2!();
+    /// assert_eq!(m.try_invert(), Some(mat2!()));
+    /// # }
+    /// ```
+    ///
+    /// ```rust
+    /// # #[macro_use] extern crate euler;
+    /// # fn main() {
+    /// let m = mat2!(
+    ///     0.0, 0.0,
+    ///     0.0, 0.0,
+    /// );
+    /// assert_eq!(m.try_invert(), None);
+    /// # }
+    /// ```
+    pub fn try_invert(self) -> Option<Mat2> {
+        self.0.invert().map(Mat2)
     }
 }
 
@@ -101,20 +130,14 @@ impl ApproxEq for Mat2 {
     }
 }
 
-#[cfg(feature = "mint-support")]
-mod mint_support {
-    use mint;
-    use super::Mat2;
-
-    impl From<mint::ColumnMatrix2<f32>> for Mat2 {
-        fn from(m: mint::ColumnMatrix2<f32>) -> Self {
-            Mat2(m.into())
-        }
+impl From<mint::ColumnMatrix2<f32>> for Mat2 {
+    fn from(m: mint::ColumnMatrix2<f32>) -> Self {
+        Mat2(m.into())
     }
+}
 
-    impl Into<mint::ColumnMatrix2<f32>> for Mat2 {
-        fn into(self) -> mint::ColumnMatrix2<f32> {
-            self.0.into()
-        }
+impl Into<mint::ColumnMatrix2<f32>> for Mat2 {
+    fn into(self) -> mint::ColumnMatrix2<f32> {
+        self.0.into()
     }
 }

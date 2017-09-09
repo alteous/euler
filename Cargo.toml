@@ -2,12 +2,14 @@
 name = "euler"
 version = "0.1.0"
 authors = ["David Harvey-Macaulay <alteous@outlook.com>"]
+description = "Experimental mathematics library for 3D computer graphics"
+repository = "https://github.com/alteous/euler"
+homepage = "https://github.com/alteous/euler"
+readme = "README.md"
+keywords = ["math", "3D", "glsl", "graphics"]
+license = "MIT/Apache-2.0"
 
 [dependencies]
 approx = "0.1.1"
 cgmath = { features = ["mint"], version = "0.15" }
 mint = "0.4.2"
-
-[features]
-default = ["mint-support"]
-mint-support = []

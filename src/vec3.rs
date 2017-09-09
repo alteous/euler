@@ -1,4 +1,5 @@
 use cgmath;
+use mint;
 use std::{mem, ops};
 
 use approx::ApproxEq;
@@ -168,40 +169,34 @@ impl ApproxEq for Vec3 {
             &&
         <f32 as ApproxEq>::ulps_eq(&self.y, &other.y, epsilon, max_ulps)
             &&
-        <f32 as ApproxEq>::ulps_eq(&self.z, &other.z, epsilon, max_ulps)
+            <f32 as ApproxEq>::ulps_eq(&self.z, &other.z, epsilon, max_ulps)
     }
 }
 
-#[cfg(feature = "mint-support")]
-mod mint_support {
-    use mint;
-    use super::Vec3;
-
-    impl From<mint::Point3<f32>> for Vec3 {
-        fn from(m: mint::Point3<f32>) -> Self {
-            let m: [f32; 3] = m.into();
-            Vec3::from(m)
-        }
+impl From<mint::Point3<f32>> for Vec3 {
+    fn from(m: mint::Point3<f32>) -> Self {
+        let m: [f32; 3] = m.into();
+        Vec3::from(m)
     }
+}
 
-    impl Into<mint::Point3<f32>> for Vec3 {
-        fn into(self) -> mint::Point3<f32> {
-            let m: [f32; 3] = self.into();
-            mint::Point3::from(m)
-        }
+impl Into<mint::Point3<f32>> for Vec3 {
+    fn into(self) -> mint::Point3<f32> {
+        let m: [f32; 3] = self.into();
+        mint::Point3::from(m)
     }
+}
 
-    impl From<mint::Vector3<f32>> for Vec3 {
-        fn from(m: mint::Vector3<f32>) -> Self {
-            let m: [f32; 3] = m.into();
-            Vec3::from(m)
-        }
+impl From<mint::Vector3<f32>> for Vec3 {
+    fn from(m: mint::Vector3<f32>) -> Self {
+        let m: [f32; 3] = m.into();
+        Vec3::from(m)
     }
+}
 
-    impl Into<mint::Vector3<f32>> for Vec3 {
-        fn into(self) -> mint::Vector3<f32> {
-            let m: [f32; 3] = self.into();
-            mint::Vector3::from(m)
-        }
+impl Into<mint::Vector3<f32>> for Vec3 {
+    fn into(self) -> mint::Vector3<f32> {
+        let m: [f32; 3] = self.into();
+        mint::Vector3::from(m)
     }
 }

@@ -1,4 +1,5 @@
 use cgmath;
+use mint;
 use std::{mem, ops};
 
 use approx::ApproxEq;
@@ -160,22 +161,16 @@ impl ApproxEq for Vec4 {
     }
 }
 
-#[cfg(feature = "mint-support")]
-mod mint_support {
-    use mint;
-    use super::Vec4;
-
-    impl From<mint::Vector4<f32>> for Vec4 {
-        fn from(m: mint::Vector4<f32>) -> Self {
-            let m: [f32; 4] = m.into();
-            Vec4::from(m)
-        }
+impl From<mint::Vector4<f32>> for Vec4 {
+    fn from(m: mint::Vector4<f32>) -> Self {
+        let m: [f32; 4] = m.into();
+        Vec4::from(m)
     }
+}
 
-    impl Into<mint::Vector4<f32>> for Vec4 {
-        fn into(self) -> mint::Vector4<f32> {
-            let m: [f32; 4] = self.into();
-            mint::Vector4::from(m)
-        }
+impl Into<mint::Vector4<f32>> for Vec4 {
+    fn into(self) -> mint::Vector4<f32> {
+        let m: [f32; 4] = self.into();
+        mint::Vector4::from(m)
     }
 }

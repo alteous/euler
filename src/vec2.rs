@@ -1,4 +1,5 @@
 use cgmath;
+use mint;
 use std::{mem, ops};
 
 use approx::ApproxEq;
@@ -116,36 +117,30 @@ impl ApproxEq for Vec2 {
     }
 }
 
-#[cfg(feature = "mint-support")]
-mod mint_support {
-    use mint;
-    use super::Vec2;
-
-    impl From<mint::Point2<f32>> for Vec2 {
-        fn from(m: mint::Point2<f32>) -> Self {
-            let m: [f32; 2] = m.into();
-            Vec2::from(m)
-        }
+impl From<mint::Point2<f32>> for Vec2 {
+    fn from(m: mint::Point2<f32>) -> Self {
+        let m: [f32; 2] = m.into();
+        Vec2::from(m)
     }
+}
 
-    impl Into<mint::Point2<f32>> for Vec2 {
-        fn into(self) -> mint::Point2<f32> {
-            let m: [f32; 2] = self.into();
-            mint::Point2::from(m)
-        }
+impl Into<mint::Point2<f32>> for Vec2 {
+    fn into(self) -> mint::Point2<f32> {
+        let m: [f32; 2] = self.into();
+        mint::Point2::from(m)
     }
+}
 
-    impl From<mint::Vector2<f32>> for Vec2 {
-        fn from(m: mint::Vector2<f32>) -> Self {
-            let m: [f32; 2] = m.into();
-            Vec2::from(m)
-        }
+impl From<mint::Vector2<f32>> for Vec2 {
+    fn from(m: mint::Vector2<f32>) -> Self {
+        let m: [f32; 2] = m.into();
+        Vec2::from(m)
     }
+}
 
-    impl Into<mint::Vector2<f32>> for Vec2 {
-        fn into(self) -> mint::Vector2<f32> {
-            let m: [f32; 2] = self.into();
-            mint::Vector2::from(m)
-        }
+impl Into<mint::Vector2<f32>> for Vec2 {
+    fn into(self) -> mint::Vector2<f32> {
+        let m: [f32; 2] = self.into();
+        mint::Vector2::from(m)
     }
 }

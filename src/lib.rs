@@ -1,9 +1,9 @@
 //! An experimental mathematics library for computer graphics.
 
+#[allow(unused_imports)]
 #[macro_use]
 extern crate approx;
 extern crate cgmath;
-#[cfg(feature = "mint-support")]
 extern crate mint;
 
 #[macro_use]
@@ -125,24 +125,6 @@ mod tests {
         assert_eq!(
             empty.as_ref(),
             &[0.0, 0.0, 0.0, 1.0]
-        )
-    }
-
-    #[test]
-    fn quat_macro_scalar_first() {
-        let scalar_first = quat!(1.2; 3.4, 5.6, 7.8);
-        assert_eq!(
-            scalar_first.as_ref(),
-            &[3.4, 5.6, 7.8, 1.2]
-        )
-    }
-
-    #[test]
-    fn quat_macro_scalar_last() {
-        let scalar_last = quat!(1.2, 3.4, 5.6; 7.8);
-        assert_eq!(
-            scalar_last.as_ref(),
-            &[1.2, 3.4, 5.6, 7.8]
         )
     }
 

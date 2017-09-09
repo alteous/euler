@@ -4,7 +4,9 @@
 ///
 /// Identity
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let empty = mat2!();
 /// assert_eq!(
 ///     empty.as_ref(),
@@ -13,11 +15,14 @@
 ///         [0.0, 1.0],
 ///     ]
 /// );
+/// # }
 /// ```
 ///
 /// Full
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let full = mat2!(
 ///     1.2, 3.4,
 ///     5.6, 7.8,
@@ -29,6 +34,7 @@
 ///         [5.6, 7.8],
 ///     ]
 /// );
+/// # }
 /// ```
 #[macro_export]
 macro_rules! mat2 {
@@ -53,7 +59,9 @@ macro_rules! mat2 {
 ///
 /// Identity
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let empty = mat3!();
 /// assert_eq!(
 ///     empty.as_ref(),
@@ -63,11 +71,14 @@ macro_rules! mat2 {
 ///         [0.0, 0.0, 1.0],
 ///     ]
 /// );
+/// # }
 /// ```
 ///
 /// Full
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let full = mat3!(
 ///     0.1, 0.2, 0.3,
 ///     0.4, 0.5, 0.6,
@@ -81,6 +92,7 @@ macro_rules! mat2 {
 ///         [0.7, 0.8, 0.9],
 ///     ]
 /// );
+/// # }
 /// ```
 #[macro_export]
 macro_rules! mat3 {
@@ -107,7 +119,9 @@ macro_rules! mat3 {
 ///
 /// Identity
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let empty = mat4!();
 /// assert_eq!(
 ///     empty.as_ref(),
@@ -118,11 +132,14 @@ macro_rules! mat3 {
 ///          [0.0, 0.0, 0.0, 1.0],
 ///     ]
 /// );
+/// # }
 /// ```
 ///
 /// Full
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let full = mat4!(
 ///     0.1, 0.2, 0.3, 0.4,
 ///     0.5, 0.6, 0.7, 0.8,
@@ -138,6 +155,7 @@ macro_rules! mat3 {
 ///         [1.3, 1.4, 1.5, 1.6],
 ///     ]
 /// );
+/// # }
 /// ```
 #[macro_export]
 macro_rules! mat4 {
@@ -162,34 +180,37 @@ macro_rules! mat4 {
 
 /// Quaternion macro constructor.
 ///
-/// Identity
+/// Identity.
 ///
-/// ```rust,ignore
-/// let empty = quat!();
-/// assert_eq!(
-///     empty.as_ref(),
-///     &[0.0, 0.0, 0.0, 1.0]
-/// );
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
+/// let q = quat!();
+/// assert_eq!(q.as_ref(), &[0.0, 0.0, 0.0, 1.0]);
+/// # }
 /// ```
 ///
-/// Scalar first
+/// Rotation around explicit axis values.
 ///
-/// ```rust,ignore
-/// let scalar_first = quat!(1.2; 3.4, 5.6, 7.8);
-/// assert_eq!(
-///     scalar_first.as_ref(),
-///     &[3.4, 5.6, 7.8, 1.2]
-/// );
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
+/// use std::f32::consts::PI;
+/// let q = quat!(1.0, 0.0, 0.0, PI / 2.0);
+/// assert_eq!(q.as_ref(), &[f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)]);
+/// # }
 /// ```
 ///
-/// Scalar last
+/// Rotation around a `Vec3` axis.
 ///
-/// ```rust,ignore
-/// let scalar_last = quat!(1.2, 3.4, 5.6; 7.8);
-/// assert_eq!(
-///     scalar_last.as_ref(),
-///     &[1.2, 3.4, 5.6, 7.8]
-/// );
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
+/// use std::f32::consts::PI;
+/// let axis = vec3!(1.0, 0.0, 0.0);
+/// let q = quat!(axis, PI / 2.0);
+/// assert_eq!(q.as_ref(), &[f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)]);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! quat {
@@ -197,18 +218,12 @@ macro_rules! quat {
         $crate::Quat::identity()
     };
 
-    ($w:expr; $x:expr, $y:expr, $z: expr) => {
-        $crate::Quat {
-            vector: vec3!($x, $y, $z),
-            scalar: $w,
-        }
+    ($xyz:expr, $r:expr) => {
+        $crate::Quat::rotation_about_axis($xyz, $r)
     };
 
-    ($x:expr, $y:expr, $z:expr; $w: expr) => {
-        $crate::Quat {
-            vector: vec3!($x, $y, $z),
-            scalar: $w,
-        }
+    ($x:expr, $y:expr, $z:expr, $r:expr) => {
+        quat!(vec3!($x, $y, $z), $r)
     };
 }
 
@@ -218,23 +233,32 @@ macro_rules! quat {
 ///
 /// Zeros
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let zeros = vec2!();
 /// assert_eq!(zeros.as_ref(), &[0.0, 0.0]);
+/// # }
 /// ```
 ///
 /// Ones
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let ones = vec2!(1.0);
 /// assert_eq!(ones.as_ref(), &[1.0, 1.0]);
+/// # }
 /// ```
 ///
 /// Full
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let full = vec2!(1.2, 3.4);
 /// assert_eq!(full.as_ref(), &[1.2, 3.4]);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! vec2 {
@@ -257,31 +281,43 @@ macro_rules! vec2 {
 ///
 /// Zeros
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let zeros = vec3!();
-/// assert_eq!(zeros.as_ref(), &[0.0, 0.0]);
+/// assert_eq!(zeros.as_ref(), &[0.0, 0.0, 0.0]);
+/// # }
 /// ```
 ///
 /// Ones
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let ones = vec3!(1.0);
 /// assert_eq!(ones.as_ref(), &[1.0, 1.0, 1.0]);
+/// # }
 /// ```
 ///
 /// Full
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let full = vec3!(1.2, 3.4, 5.6);
 /// assert_eq!(full.as_ref(), &[1.2, 3.4, 5.6]);
+/// # }
 /// ```
 ///
 /// From `vec2`
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let vec2 = vec2!(1.2, 3.4);
 /// let vec3 = vec3!(vec2, 5.6);
 /// assert_eq!(vec3.as_ref(), &[1.2, 3.4, 5.6]);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! vec3 {
@@ -312,39 +348,54 @@ macro_rules! vec3 {
 ///
 /// Zeros
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let zeros = vec4!();
 /// assert_eq!(zeros.as_ref(), &[0.0, 0.0, 0.0, 0.0]);
+/// # }
 /// ```
 ///
 /// Ones
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let ones = vec4!(1.0);
 /// assert_eq!(ones.as_ref(), &[1.0, 1.0, 1.0, 1.0]);
+/// # }
 /// ```
 ///
 /// Full
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let full = vec4!(1.2, 3.4, 5.6, 7.8);
 /// assert_eq!(full.as_ref(), &[1.2, 3.4, 5.6, 7.8]);
+/// # }
 /// ```
 ///
 /// From `vec2`
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let vec2 = vec2!(1.2, 3.4);
 /// let vec4 = vec4!(vec2, 5.6, 7.8);
-/// assert_eq!(vec3.as_ref(), &[1.2, 3.4, 5.6, 7.8]);
+/// assert_eq!(vec4.as_ref(), &[1.2, 3.4, 5.6, 7.8]);
+/// # }
 /// ```
 ///
 /// From `vec3`
 ///
-/// ```rust,ignore
+/// ```rust
+/// # #[macro_use] extern crate euler;
+/// # fn main() {
 /// let vec3 = vec3!(1.2, 3.4, 5.6);
 /// let vec4 = vec4!(vec3, 7.8);
 /// assert_eq!(vec4.as_ref(), &[1.2, 3.4, 5.6, 7.8]);
+/// # }
 /// ```
 #[macro_export]
 macro_rules! vec4 {
