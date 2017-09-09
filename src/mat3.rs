@@ -1,6 +1,8 @@
 use cgmath;
+use std::{mem, ops};
+
 use cgmath::SquareMatrix;
-use std::mem;
+use Vec3;
 
 /// 3x3 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -46,6 +48,33 @@ impl Into<[[f32; 3]; 3]> for Mat3 {
         unsafe {
             mem::transmute(self)
         }
+    }
+}
+
+impl ops::Mul<Mat3> for Mat3 {
+    type Output = Mat3;
+    fn mul(self, rhs: Mat3) -> Self::Output {
+        let left: cgmath::Matrix3<f32> = unsafe { mem::transmute(self) };
+        let right: cgmath::Matrix3<f32> = unsafe { mem::transmute(rhs) };
+        let output: [[f32; 3]; 3] = (left * right).into();
+        output.into()
+    }
+}
+
+impl ops::Mul<Vec3> for Mat3 {
+    type Output = Vec3;
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        let matrix: cgmath::Matrix3<f32> = unsafe { mem::transmute(self) };
+        let vector: cgmath::Vector3<f32> = unsafe { mem::transmute(rhs) };
+        let output: [f32; 3] = (matrix * vector).into();
+        unsafe { mem::transmute(output) }
+    }
+}
+
+impl<'a> ops::Mul<Vec3> for &'a Mat3 {
+    type Output = Vec3;
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        (*self).mul(rhs)
     }
 }
 

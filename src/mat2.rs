@@ -1,7 +1,8 @@
 use cgmath;
-use std::mem;
+use std::{mem, ops};
 
 use cgmath::SquareMatrix;
+use Vec2;
 
 /// 2x2 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -47,6 +48,33 @@ impl Into<[[f32; 2]; 2]> for Mat2 {
         unsafe {
             mem::transmute(self)
         }
+    }
+}
+
+impl ops::Mul<Mat2> for Mat2 {
+    type Output = Mat2;
+    fn mul(self, rhs: Mat2) -> Self::Output {
+        let left: cgmath::Matrix2<f32> = unsafe { mem::transmute(self) };
+        let right: cgmath::Matrix2<f32> = unsafe { mem::transmute(rhs) };
+        let output: [[f32; 2]; 2] = (left * right).into();
+        output.into()
+    }
+}
+
+impl ops::Mul<Vec2> for Mat2 {
+    type Output = Vec2;
+    fn mul(self, rhs: Vec2) -> Self::Output {
+        let matrix: cgmath::Matrix2<f32> = unsafe { mem::transmute(self) };
+        let vector: cgmath::Vector2<f32> = unsafe { mem::transmute(rhs) };
+        let output: [f32; 2] = (matrix * vector).into();
+        unsafe { mem::transmute(output) }
+    }
+}
+
+impl<'a> ops::Mul<Vec2> for &'a Mat2 {
+    type Output = Vec2;
+    fn mul(self, rhs: Vec2) -> Self::Output {
+        (*self).mul(rhs)
     }
 }
 

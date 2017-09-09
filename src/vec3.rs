@@ -38,6 +38,12 @@ impl Vec3 {
         let result = left.cross(right);
         vec3!(result.x, result.y, result.z)
     }
+
+    /// Returns a vector in the same direction but with unit magnitude.
+    pub fn normalize(self) -> Vec3 {
+        let n: [f32; 3] = cgmath::Vector3::new(self.x, self.y, self.z).normalize().into();
+        n.into()
+    }
 }
 
 impl AsRef<[f32; 3]> for Vec3 {

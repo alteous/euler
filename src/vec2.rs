@@ -23,6 +23,12 @@ impl Vec2 {
         let right = cgmath::Vector2::new(other.x, other.y);
         left.dot(right)
     }
+
+    /// Returns a vector in the same direction but with unit magnitude.
+    pub fn normalize(self) -> Vec2 {
+        let n: [f32; 2] = cgmath::Vector2::new(self.x, self.y).normalize().into();
+        n.into()
+    }
 }
 
 impl AsRef<[f32; 2]> for Vec2 {
@@ -135,7 +141,6 @@ mod mint_support {
     use mint;
     use super::Vec2;
 
-    #[cfg(feature = "mint-support")]
     impl From<mint::Point2<f32>> for Vec2 {
         fn from(m: mint::Point2<f32>) -> Self {
             let m: [f32; 2] = m.into();
@@ -143,7 +148,6 @@ mod mint_support {
         }
     }
 
-    #[cfg(feature = "mint-support")]
     impl Into<mint::Point2<f32>> for Vec2 {
         fn into(self) -> mint::Point2<f32> {
             let m: [f32; 2] = self.into();
@@ -151,7 +155,6 @@ mod mint_support {
         }
     }
 
-    #[cfg(feature = "mint-support")]
     impl From<mint::Vector2<f32>> for Vec2 {
         fn from(m: mint::Vector2<f32>) -> Self {
             let m: [f32; 2] = m.into();
@@ -159,7 +162,6 @@ mod mint_support {
         }
     }
 
-    #[cfg(feature = "mint-support")]
     impl Into<mint::Vector2<f32>> for Vec2 {
         fn into(self) -> mint::Vector2<f32> {
             let m: [f32; 2] = self.into();

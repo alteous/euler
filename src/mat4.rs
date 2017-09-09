@@ -19,7 +19,17 @@ impl Mat4 {
     ///
     /// Returns `None` is the matrix has no inverse, i.e. has a zero determinant.
     pub fn invert(self) -> Option<Mat4> {
-        self.0.invert().map(|m| m.into())
+        self.0.invert().map(|m| unsafe { mem::transmute(m) })
+    }
+}
+
+impl ops::Mul<Mat4> for Mat4 {
+    type Output = Mat4;
+    fn mul(self, rhs: Mat4) -> Self::Output {
+        let left: cgmath::Matrix4<f32> = unsafe { mem::transmute(self) };
+        let right: cgmath::Matrix4<f32> = unsafe { mem::transmute(rhs) };
+        let output: [[f32; 4]; 4] = (left * right).into();
+        output.into()
     }
 }
 
@@ -30,6 +40,13 @@ impl ops::Mul<Vec4> for Mat4 {
         let vector: cgmath::Vector4<f32> = unsafe { mem::transmute(rhs) };
         let output: [f32; 4] = (matrix * vector).into();
         unsafe { mem::transmute(output) }
+    }
+}
+
+impl<'a> ops::Mul<Vec4> for &'a Mat4 {
+    type Output = Vec4;
+    fn mul(self, rhs: Vec4) -> Self::Output {
+        (*self).mul(rhs)
     }
 }
 
