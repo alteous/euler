@@ -15,19 +15,6 @@
 /// );
 /// ```
 ///
-/// Diagonal
-///
-/// ```rust,ignore
-/// let single = mat2!(2.0);
-/// assert_eq!(
-///     single.as_ref(),
-///     &[
-///         [2.0, 0.0],
-///         [0.0, 2.0],
-///     ]
-/// );
-/// ```
-///
 /// Full
 ///
 /// ```rust,ignore
@@ -46,27 +33,17 @@
 #[macro_export]
 macro_rules! mat2 {
     () => {
-        $crate::Mat2 {
-            m00: 1.0, m01: 0.0,
-            m10: 0.0, m11: 1.0,
-        }
-    };
-
-    ($xx:expr) => {
-        $crate::Mat2 {
-            m00: $xx, m01: 0.0,
-            m10: 0.0, m11: $xx,
-        }
+        $crate::Mat2::identity()
     };
 
     (
         $m00:expr, $m01:expr,
         $m10:expr, $m11:expr,
     ) => {
-        $crate::Mat2 {
-            m00: $m00, m01: $m01,
-            m10: $m10, m11: $m11,
-        }
+        $crate::Mat2::from([
+            [$m00, $m01],
+            [$m10, $m11],
+        ])
     };
 }
 
@@ -84,20 +61,6 @@ macro_rules! mat2 {
 ///         [1.0, 0.0, 0.0],
 ///         [0.0, 1.0, 0.0],
 ///         [0.0, 0.0, 1.0],
-///     ]
-/// );
-/// ```
-///
-/// Diagonal
-///
-/// ```rust,ignore
-/// let single = mat3!(2.0);
-/// assert_eq!(
-///     single.as_ref(),
-///     &[
-///         [2.0, 0.0, 0.0],
-///         [0.0, 2.0, 0.0],
-///         [0.0, 0.0, 2.0],
 ///     ]
 /// );
 /// ```
@@ -122,19 +85,7 @@ macro_rules! mat2 {
 #[macro_export]
 macro_rules! mat3 {
     () => {
-        $crate::Mat3 {
-            m00: 1.0, m01: 0.0, m02: 0.0,
-            m10: 0.0, m11: 1.0, m12: 0.0,
-            m20: 0.0, m21: 0.0, m22: 1.0,
-        }
-    };
-
-    ($xx:expr) => {
-        $crate::Mat3 {
-            m00: $xx, m01: 0.0, m02: 0.0,
-            m10: 0.0, m11: $xx, m12: 0.0,
-            m20: 0.0, m21: 0.0, m22: $xx,
-        }
+        $crate::Mat3::identity()
     };
 
     (
@@ -142,11 +93,11 @@ macro_rules! mat3 {
         $m10:expr, $m11:expr, $m12:expr,
         $m20:expr, $m21:expr, $m22:expr,
     ) => {
-        $crate::Mat3 {
-            m00: $m00, m01: $m01, m02: $m02,
-            m10: $m10, m11: $m11, m12: $m12,
-            m20: $m20, m21: $m21, m22: $m22,
-        }
+        $crate::Mat3::from([
+            [$m00, $m01, $m02],
+            [$m10, $m11, $m12],
+            [$m20, $m21, $m22],
+        ])
     };
 }
 
@@ -165,21 +116,6 @@ macro_rules! mat3 {
 ///          [0.0, 1.0, 0.0, 0.0],
 ///          [0.0, 0.0, 1.0, 0.0],
 ///          [0.0, 0.0, 0.0, 1.0],
-///     ]
-/// );
-/// ```
-///
-/// Diagonal
-///
-/// ```rust,ignore
-/// let single = mat4!(2.0);
-/// assert_eq!(
-///     single.as_ref(),
-///     &[
-///         [2.0, 0.0, 0.0, 0.0],
-///         [0.0, 2.0, 0.0, 0.0],
-///         [0.0, 0.0, 2.0, 0.0],
-///         [0.0, 0.0, 0.0, 2.0],
 ///     ]
 /// );
 /// ```
@@ -206,21 +142,7 @@ macro_rules! mat3 {
 #[macro_export]
 macro_rules! mat4 {
     () => {
-        $crate::Mat4 {
-            m00: 1.0, m01: 0.0, m02: 0.0, m03: 0.0,
-            m10: 0.0, m11: 1.0, m12: 0.0, m13: 0.0,
-            m20: 0.0, m21: 0.0, m22: 1.0, m23: 0.0,
-            m30: 0.0, m31: 0.0, m32: 0.0, m33: 1.0,
-        }
-    };
-
-    ($xx:expr) => {
-        $crate::Mat4 {
-            m00: $xx, m01: 0.0, m02: 0.0, m03: 0.0,
-            m10: 0.0, m11: $xx, m12: 0.0, m13: 0.0,
-            m20: 0.0, m21: 0.0, m22: $xx, m23: 0.0,
-            m30: 0.0, m31: 0.0, m32: 0.0, m33: $xx,
-        }
+        $crate::Mat4::identity()
     };
 
     (
@@ -229,11 +151,63 @@ macro_rules! mat4 {
         $m20:expr, $m21:expr, $m22:expr, $m23:expr,
         $m30:expr, $m31:expr, $m32:expr, $m33:expr,
     ) => {
-        $crate::Mat4 {
-            m00: $m00, m01: $m01, m02: $m02, m03: $m03,
-            m10: $m10, m11: $m11, m12: $m12, m13: $m13,
-            m20: $m20, m21: $m21, m22: $m22, m23: $m23,
-            m30: $m30, m31: $m31, m32: $m32, m33: $m33,
+        $crate::Mat4::from([
+            [$m00, $m01, $m02, $m03],
+            [$m10, $m11, $m12, $m13],
+            [$m20, $m21, $m22, $m23],
+            [$m30, $m31, $m32, $m33],
+        ])
+    };
+}
+
+/// Quaternion macro constructor.
+///
+/// Identity
+///
+/// ```rust,ignore
+/// let empty = quat!();
+/// assert_eq!(
+///     empty.as_ref(),
+///     &[0.0, 0.0, 0.0, 1.0]
+/// );
+/// ```
+///
+/// Scalar first
+///
+/// ```rust,ignore
+/// let scalar_first = quat!(1.2; 3.4, 5.6, 7.8);
+/// assert_eq!(
+///     scalar_first.as_ref(),
+///     &[3.4, 5.6, 7.8, 1.2]
+/// );
+/// ```
+///
+/// Scalar last
+///
+/// ```rust,ignore
+/// let scalar_last = quat!(1.2, 3.4, 5.6; 7.8);
+/// assert_eq!(
+///     scalar_last.as_ref(),
+///     &[1.2, 3.4, 5.6, 7.8]
+/// );
+/// ```
+#[macro_export]
+macro_rules! quat {
+    () => {
+        $crate::Quat::identity()
+    };
+
+    ($w:expr; $x:expr, $y:expr, $z: expr) => {
+        $crate::Quat {
+            vector: vec3!($x, $y, $z),
+            scalar: $w,
+        }
+    };
+
+    ($x:expr, $y:expr, $z:expr; $w: expr) => {
+        $crate::Quat {
+            vector: vec3!($x, $y, $z),
+            scalar: $w,
         }
     };
 }
@@ -312,11 +286,11 @@ macro_rules! vec2 {
 #[macro_export]
 macro_rules! vec3 {
     () => {
-        $crate::Vec3 { x: 0.0, y: 0.0, z: 0.0, w: 0.0 }
+        $crate::Vec3 { x: 0.0, y: 0.0, z: 0.0 }
     };
 
     ($xyz:expr) => {
-        $crate::Vec3 { x: $xyz, y: $xyz, z: $xyz, w: 0.0 }
+        $crate::Vec3 { x: $xyz, y: $xyz, z: $xyz }
     };
     
     ($xy:expr, $z:expr) => {
@@ -324,12 +298,11 @@ macro_rules! vec3 {
             x: $crate::Vec2::from($xy).x,
             y: $crate::Vec2::from($xy).y,
             z: $z,
-            w: 0.0,
         }
     };
 
     ($x:expr, $y:expr, $z:expr) => {
-        $crate::Vec3 { x: $x, y: $y, z: $z, w: 0.0 }
+        $crate::Vec3 { x: $x, y: $y, z: $z }
     };
 }
 

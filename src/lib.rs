@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate approx;
 extern crate cgmath;
+#[cfg(feature = "mint-support")]
+extern crate mint;
 
 #[macro_use]
 mod macros;
@@ -38,18 +40,6 @@ mod tests {
     }
 
     #[test]
-    fn mat2_macro_single() {
-        let single = mat2!(2.0);
-        assert_eq!(
-            single.as_ref(),
-            &[
-                [2.0, 0.0],
-                [0.0, 2.0],
-            ]
-        );
-    }
-
-    #[test]
     fn mat2_macro_full() {
         let full = mat2!(
             1.2, 3.4,
@@ -73,18 +63,6 @@ mod tests {
                 [1.0, 0.0, 0.0],
                 [0.0, 1.0, 0.0],
                 [0.0, 0.0, 1.0],
-            ]
-        );
-    }
-    #[test]
-    fn mat3_macro_single() {
-        let single = mat3!(2.0);
-        assert_eq!(
-            single.as_ref(),
-            &[
-                [2.0, 0.0, 0.0],
-                [0.0, 2.0, 0.0],
-                [0.0, 0.0, 2.0],
             ]
         );
     }
@@ -121,20 +99,6 @@ mod tests {
     }
 
     #[test]
-    fn mat4_macro_single() {
-        let single = mat4!(2.0);
-        assert_eq!(
-            single.as_ref(),
-            &[
-                [2.0, 0.0, 0.0, 0.0],
-                [0.0, 2.0, 0.0, 0.0],
-                [0.0, 0.0, 2.0, 0.0],
-                [0.0, 0.0, 0.0, 2.0],
-            ]
-        );
-    }
-
-    #[test]
     fn mat4_macro_full() {
         let full = mat4!(
             0.1, 0.2, 0.3, 0.4,
@@ -154,19 +118,36 @@ mod tests {
     }
 
     #[test]
+    fn quat_macro_empty() {
+        let empty = quat!();
+        assert_eq!(
+            empty.as_ref(),
+            &[0.0, 0.0, 0.0, 1.0]
+        )
+    }
+
+    #[test]
+    fn quat_macro_scalar_first() {
+        let scalar_first = quat!(1.2; 3.4, 5.6, 7.8);
+        assert_eq!(
+            scalar_first.as_ref(),
+            &[3.4, 5.6, 7.8, 1.2]
+        )
+    }
+
+    #[test]
+    fn quat_macro_scalar_last() {
+        let scalar_last = quat!(1.2, 3.4, 5.6; 7.8);
+        assert_eq!(
+            scalar_last.as_ref(),
+            &[1.2, 3.4, 5.6, 7.8]
+        )
+    }
+
+    #[test]
     fn vec2_relative_eq() {
         assert_relative_eq!(vec2!(1.0, 2.0), vec2!(1.0, 2.0));
         assert_relative_ne!(vec2!(1.0, 2.0), vec2!(1.0, 2.1));
-    }
-
-    #[test]
-    fn vec2_plus_scalar() {
-        assert_relative_eq!(vec2!(2.2, 4.4), vec2!(1.2, 3.4) + 1.0);
-    }
-
-    #[test]
-    fn vec2_minus_scalar() {
-        assert_relative_eq!(vec2!(0.2, 2.4), vec2!(2.2, 4.4) - 2.0);
     }
 
     #[test]
@@ -183,16 +164,6 @@ mod tests {
     fn vec3_relative_eq() {
         assert_relative_eq!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.0));
         assert_relative_ne!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.1));
-    }
-
-    #[test]
-    fn vec3_plus_scalar() {
-        assert_relative_eq!(vec3!(2.2, 4.4, 6.6), vec3!(1.2, 3.4, 5.6) + 1.0);
-    }
-
-    #[test]
-    fn vec3_minus_scalar() {
-        assert_relative_eq!(vec3!(0.2, 2.4, 4.6), vec3!(1.2, 3.4, 5.6) - 1.0);
     }
 
     #[test]
@@ -233,14 +204,12 @@ mod tests {
     fn vec3_macro_zeros() {
         let zeros = vec3!();
         assert_eq!(zeros.as_ref(), &[0.0, 0.0, 0.0]);
-        assert_eq!(zeros.w, 0.0);
     }
 
     #[test]
     fn vec3_macro_ones() {
         let ones = vec3!(1.0);
         assert_eq!(ones.as_ref(), &[1.0, 1.0, 1.0]);
-        assert_eq!(ones.w, 0.0);
     }
 
     #[test]
@@ -255,7 +224,6 @@ mod tests {
         let vec2 = vec2!(1.2, 3.4);
         let vec3 = vec3!(vec2, 5.6);
         assert_eq!(vec3.as_ref(), &[1.2, 3.4, 5.6]);
-        assert_eq!(vec3.w, 0.0);
     }
 
     #[test]

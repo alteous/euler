@@ -33,6 +33,18 @@ impl AsRef<[f32; 2]> for Vec2 {
     }
 }
 
+impl From<[f32; 2]> for Vec2 {
+    fn from(v: [f32; 2]) -> Vec2 {
+        vec2!(v[0], v[1])
+    }
+}
+
+impl Into<[f32; 2]> for Vec2 {
+    fn into(self) -> [f32; 2] {
+        [self.x, self.y]
+    }
+}
+
 impl From<Vec3> for Vec2 {
     fn from(vec3: Vec3) -> Vec2 {
         Vec2 { x: vec3.x, y: vec3.y }
@@ -42,12 +54,6 @@ impl From<Vec3> for Vec2 {
 impl From<Vec4> for Vec2 {
     fn from(vec4: Vec4) -> Vec2 {
         Vec2 { x: vec4.x, y: vec4.y }
-    }
-}
-
-impl Into<[f32; 2]> for Vec2 {
-    fn into(self) -> [f32; 2] {
-        [self.x, self.y]
     }
 }
 
@@ -121,5 +127,27 @@ impl ApproxEq for Vec2 {
         <f32 as ApproxEq>::ulps_eq(&self.x, &other.x, epsilon, max_ulps)
             &&
         <f32 as ApproxEq>::ulps_eq(&self.y, &other.y, epsilon, max_ulps)
+    }
+}
+
+#[cfg(feature = "mint-support")]
+mod mint_support {
+    use mint;
+    use super::Vec2;
+
+    #[cfg(feature = "mint-support")]
+    impl From<mint::Vector2<f32>> for Vec2 {
+        fn from(m: mint::Vector2<f32>) -> Self {
+            let m: [f32; 2] = m.into();
+            Vec2::from(m)
+        }
+    }
+
+    #[cfg(feature = "mint-support")]
+    impl Into<mint::Vector2<f32>> for Vec2 {
+        fn into(self) -> mint::Vector2<f32> {
+            let m: [f32; 2] = self.into();
+            mint::Vector2::from(m)
+        }
     }
 }

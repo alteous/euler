@@ -21,10 +21,6 @@ pub struct Vec3 {
 
     /// Z co-ordinate.
     pub z: f32,
-
-    /// Homogeneous W co-ordinate - always `0.0` for 3D vectors.
-    #[doc(hidden)]
-    pub w: f32,
 }
 
 impl Vec3 {
@@ -52,9 +48,9 @@ impl AsRef<[f32; 3]> for Vec3 {
     }
 }
 
-impl From<Vec4> for Vec3 {
-    fn from(vec4: Vec4) -> Vec3 {
-        Vec3 { x: vec4.x, y: vec4.y, z: vec4.z, w: 0.0 }
+impl From<[f32; 3]> for Vec3 {
+    fn from(v: [f32; 3]) -> Vec3 {
+        vec3!(v[0], v[1], v[2])
     }
 }
 
@@ -64,27 +60,45 @@ impl Into<[f32; 3]> for Vec3 {
     }
 }
 
-impl ops::Add<f32> for Vec3 {
+impl From<Vec4> for Vec3 {
+    fn from(vec4: Vec4) -> Vec3 {
+        Vec3 { x: vec4.x, y: vec4.y, z: vec4.z }
+    }
+}
+
+impl ops::Mul<f32> for Vec3 {
     type Output = Vec3;
-    fn add(self, rhs: f32) -> Self::Output {
+    fn mul(self, rhs: f32) -> Self::Output {
         Vec3 {
-            x: self.x + rhs,
-            y: self.y + rhs,
-            z: self.z + rhs,
-            w: 0.0,
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
         }
     }
 }
-    
-impl ops::Sub<f32> for Vec3 {
+
+impl ops::Mul<Vec3> for f32 {
     type Output = Vec3;
-    fn sub(self, rhs: f32) -> Self::Output {
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        rhs.mul(self)
+    }
+}
+
+impl ops::Div<f32> for Vec3 {
+    type Output = Vec3;
+    fn div(self, rhs: f32) -> Self::Output {
         Vec3 {
-            x: self.x - rhs,
-            y: self.y - rhs,
-            z: self.z - rhs,
-            w: 0.0,
+            x: self.x / rhs,
+            y: self.y / rhs,
+            z: self.z / rhs,
         }
+    }
+}
+
+impl ops::Div<Vec3> for f32 {
+    type Output = Vec3;
+    fn div(self, rhs: Vec3) -> Self::Output {
+        rhs.div(self)
     }
 }
 
@@ -95,7 +109,6 @@ impl ops::Add<Vec3> for Vec3 {
             x: self.x + rhs.x,
             y: self.y + rhs.y,
             z: self.z + rhs.z,
-            w: 0.0,
         }
     }
 }
@@ -107,7 +120,6 @@ impl ops::Sub<Vec3> for Vec3 {
             x: self.x - rhs.x,
             y: self.y - rhs.y,
             z: self.z - rhs.z,
-            w: 0.0,
         }
     }
 }
@@ -146,5 +158,27 @@ impl ApproxEq for Vec3 {
         <f32 as ApproxEq>::ulps_eq(&self.y, &other.y, epsilon, max_ulps)
             &&
         <f32 as ApproxEq>::ulps_eq(&self.z, &other.z, epsilon, max_ulps)
+    }
+}
+
+#[cfg(feature = "mint-support")]
+mod mint_support {
+    use mint;
+    use super::Vec3;
+
+    #[cfg(feature = "mint-support")]
+    impl From<mint::Vector3<f32>> for Vec3 {
+        fn from(m: mint::Vector3<f32>) -> Self {
+            let m: [f32; 3] = m.into();
+            Vec3::from(m)
+        }
+    }
+
+    #[cfg(feature = "mint-support")]
+    impl Into<mint::Vector3<f32>> for Vec3 {
+        fn into(self) -> mint::Vector3<f32> {
+            let m: [f32; 3] = self.into();
+            mint::Vector3::from(m)
+        }
     }
 }

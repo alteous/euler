@@ -4,6 +4,8 @@ use std::mem;
 use approx::ApproxEq;
 use cgmath::InnerSpace;
 
+use Vec3;
+
 /// Homogeneous 3D vector.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
@@ -28,6 +30,11 @@ impl Vec4 {
         let right = cgmath::Vector4::new(other.x, other.y, other.z, other.w);
         left.dot(right)
     }
+
+    /// Returns the XYZ components of the vector.
+    pub fn xyz(self) -> Vec3 {
+        vec3!(self.x, self.y, self.z)
+    }
 }
 
 impl AsRef<[f32; 4]> for Vec4 {
@@ -35,6 +42,12 @@ impl AsRef<[f32; 4]> for Vec4 {
         unsafe {
             mem::transmute(self)
         }
+    }
+}
+
+impl From<[f32; 4]> for Vec4 {
+    fn from(v: [f32; 4]) -> Vec4 {
+        vec4!(v[0], v[1], v[2], v[3])
     }
 }
 
@@ -82,5 +95,27 @@ impl ApproxEq for Vec4 {
         <f32 as ApproxEq>::ulps_eq(&self.z, &other.z, epsilon, max_ulps)
             &&
         <f32 as ApproxEq>::ulps_eq(&self.w, &other.w, epsilon, max_ulps)
+    }
+}
+
+#[cfg(feature = "mint-support")]
+mod mint_support {
+    use mint;
+    use super::Vec4;
+
+    #[cfg(feature = "mint-support")]
+    impl From<mint::Vector4<f32>> for Vec4 {
+        fn from(m: mint::Vector4<f32>) -> Self {
+            let m: [f32; 4] = m.into();
+            Vec4::from(m)
+        }
+    }
+
+    #[cfg(feature = "mint-support")]
+    impl Into<mint::Vector4<f32>> for Vec4 {
+        fn into(self) -> mint::Vector4<f32> {
+            let m: [f32; 4] = self.into();
+            mint::Vector4::from(m)
+        }
     }
 }
