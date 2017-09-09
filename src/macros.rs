@@ -342,7 +342,7 @@ macro_rules! vec3 {
     };
 }
 
-/// Homogeneous 3D vector macro constructor.
+/// 4D vector macro constructor.
 ///
 /// # Examples
 ///

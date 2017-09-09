@@ -7,7 +7,7 @@ use cgmath::InnerSpace;
 
 use Vec3;
 
-/// Homogeneous 3D vector.
+/// 4D vector.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Vec4 {

@@ -2,7 +2,8 @@
 name = "euler"
 version = "0.1.0"
 authors = ["David Harvey-Macaulay <alteous@outlook.com>"]
-description = "Experimental mathematics library for 3D computer graphics"
+description = "Mathematics library for 3D computer graphics"
+documentation = "https://docs.rs/euler"
 repository = "https://github.com/alteous/euler"
 homepage = "https://github.com/alteous/euler"
 readme = "README.md"
