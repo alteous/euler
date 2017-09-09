@@ -4,10 +4,10 @@ An experimental mathematics library for computer graphics.
 
 ## Project ideas
 
+ * Strictly 3D.
  * No distinction between 'point' and 'vector' types.
- * No need to import traits for functionality.
+ * No need to import traits or modules for most functionality.
  * GLSL-like constructors for vectors and matrices.
- * `vec3` is actually a `vec4` with a fixed zero `w` co-ordinate.
  * All angles are in radians.
  * All types are base `f32`.
  * Adding two homogeneous 4D vectors is not allowed.
