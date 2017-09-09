@@ -1,6 +1,6 @@
 # euler
 
-An experimental and opinionated mathematics library for computer graphics.
+An experimental mathematics library for computer graphics.
 
 ## Project ideas
 
