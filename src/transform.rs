@@ -1,5 +1,4 @@
 use cgmath;
-use std::mem;
 
 use {Quat, Mat4, Vec3};
 
@@ -37,10 +36,10 @@ impl Transform {
         );
         let r = cgmath::Matrix4::from(
             cgmath::Quaternion::new(
+                self.rotation.scalar,
                 self.rotation.vector.x,
                 self.rotation.vector.y,
                 self.rotation.vector.z,
-                self.rotation.scalar,
             ),
         );
         let s = cgmath::Matrix4::from_nonuniform_scale(
@@ -48,9 +47,7 @@ impl Transform {
             self.scale.y,
             self.scale.z,
         );
-        let matrix: [[f32; 4]; 4] = (t * r * s).into();
-        unsafe {
-            mem::transmute(matrix)
-        }
+        let m: [[f32; 4]; 4] = (t * r * s).into();
+        Mat4::from(m)
     }
 }

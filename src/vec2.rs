@@ -63,26 +63,6 @@ impl From<Vec4> for Vec2 {
     }
 }
 
-impl ops::Add<f32> for Vec2 {
-    type Output = Vec2;
-    fn add(self, rhs: f32) -> Self::Output {
-        Vec2 {
-            x: self.x + rhs,
-            y: self.y + rhs,
-        }
-    }
-}
-
-impl ops::Sub<f32> for Vec2 {
-    type Output = Vec2;
-    fn sub(self, rhs: f32) -> Self::Output {
-        Vec2 {
-            x: self.x - rhs,
-            y: self.y - rhs,
-        }
-    }
-}
-
 impl ops::Add<Vec2> for Vec2 {
     type Output = Vec2;
     fn add(self, rhs: Vec2) -> Self::Output {
