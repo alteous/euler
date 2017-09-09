@@ -5,7 +5,7 @@ authors = ["David Harvey-Macaulay <alteous@outlook.com>"]
 
 [dependencies]
 approx = "0.1.1"
-cgmath = "0.15"
+cgmath = { features = ["mint"], version = "0.15" }
 mint = "0.4.2"
 
 [features]

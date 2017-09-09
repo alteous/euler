@@ -19,7 +19,7 @@ impl Mat3 {
     ///
     /// Returns `None` is the matrix has no inverse, i.e. has a zero determinant.
     pub fn invert(self) -> Option<Mat3> {
-        self.0.invert().map(|m| m.into())
+        self.0.invert().map(|m| Mat3(m))
     }
 }
 
@@ -31,12 +31,6 @@ impl AsRef<[[f32; 3]; 3]> for Mat3 {
     }
 }
 
-impl From<cgmath::Matrix3<f32>> for Mat3 {
-    fn from(m: cgmath::Matrix3<f32>) -> Self {
-        Mat3(m)
-    }
-}
-
 impl From<[[f32; 3]; 3]> for Mat3 {
     fn from(m: [[f32; 3]; 3]) -> Self {
         Mat3(m.into())
@@ -45,29 +39,22 @@ impl From<[[f32; 3]; 3]> for Mat3 {
 
 impl Into<[[f32; 3]; 3]> for Mat3 {
     fn into(self) -> [[f32; 3]; 3] {
-        unsafe {
-            mem::transmute(self)
-        }
+        self.0.into()
     }
 }
 
 impl ops::Mul<Mat3> for Mat3 {
     type Output = Mat3;
     fn mul(self, rhs: Mat3) -> Self::Output {
-        let left: cgmath::Matrix3<f32> = unsafe { mem::transmute(self) };
-        let right: cgmath::Matrix3<f32> = unsafe { mem::transmute(rhs) };
-        let output: [[f32; 3]; 3] = (left * right).into();
-        output.into()
+        Mat3(self.0 * rhs.0)
     }
 }
 
 impl ops::Mul<Vec3> for Mat3 {
     type Output = Vec3;
     fn mul(self, rhs: Vec3) -> Self::Output {
-        let matrix: cgmath::Matrix3<f32> = unsafe { mem::transmute(self) };
-        let vector: cgmath::Vector3<f32> = unsafe { mem::transmute(rhs) };
-        let output: [f32; 3] = (matrix * vector).into();
-        unsafe { mem::transmute(output) }
+        let v = self.0 * cgmath::Vector3::new(rhs.x, rhs.y, rhs.z);
+        vec3!(v.x, v.y, v.z)
     }
 }
 
@@ -83,19 +70,15 @@ mod mint_support {
     use mint;
     use super::Mat3;
 
-    #[cfg(feature = "mint-support")]
     impl From<mint::ColumnMatrix3<f32>> for Mat3 {
         fn from(m: mint::ColumnMatrix3<f32>) -> Self {
-            let m: [[f32; 3]; 3] = m.into();
-            Mat3::from(m)
+            Mat3(m.into())
         }
     }
 
-    #[cfg(feature = "mint-support")]
     impl Into<mint::ColumnMatrix3<f32>> for Mat3 {
         fn into(self) -> mint::ColumnMatrix3<f32> {
-            let m: [[f32; 3]; 3] = self.into();
-            mint::ColumnMatrix3::from(m)
+            self.0.into()
         }
     }
 }
