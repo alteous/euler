@@ -5,7 +5,7 @@ use {Quat, Mat4, Vec3};
 
 /// Translation + Rotation + Non-uniform Scale transform in 3D space.
 #[derive(Clone, Copy, Debug, PartialEq)]
-pub struct Transform3 {
+pub struct Transform {
     /// Translation vector.
     pub translation: Vec3,
 
@@ -16,10 +16,10 @@ pub struct Transform3 {
     pub scale: Vec3,
 }
 
-impl Transform3 {
+impl Transform {
     /// Returns the identity transform.
     pub fn identity() -> Self {
-        Transform3 {
+        Transform {
             translation: vec3!(),
             rotation: Quat::identity(),
             scale: vec3!(1.0),

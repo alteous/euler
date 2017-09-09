@@ -103,7 +103,6 @@ mod mint_support {
     use mint;
     use super::Vec4;
 
-    #[cfg(feature = "mint-support")]
     impl From<mint::Vector4<f32>> for Vec4 {
         fn from(m: mint::Vector4<f32>) -> Self {
             let m: [f32; 4] = m.into();
@@ -111,7 +110,6 @@ mod mint_support {
         }
     }
 
-    #[cfg(feature = "mint-support")]
     impl Into<mint::Vector4<f32>> for Vec4 {
         fn into(self) -> mint::Vector4<f32> {
             let m: [f32; 4] = self.into();

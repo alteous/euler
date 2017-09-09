@@ -2,7 +2,7 @@ use cgmath;
 use std::{mem, ops};
 
 use cgmath::SquareMatrix;
-use Vec4;
+use {Transform, Vec4};
 
 /// 4x4 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -38,6 +38,12 @@ impl AsRef<[[f32; 4]; 4]> for Mat4 {
         unsafe {
             mem::transmute(self)
         }
+    }
+}
+
+impl From<Transform> for Mat4 {
+    fn from(transform: Transform) -> Self {
+        transform.matrix()
     }
 }
 

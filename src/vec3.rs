@@ -166,7 +166,20 @@ mod mint_support {
     use mint;
     use super::Vec3;
 
-    #[cfg(feature = "mint-support")]
+    impl From<mint::Point3<f32>> for Vec3 {
+        fn from(m: mint::Point3<f32>) -> Self {
+            let m: [f32; 3] = m.into();
+            Vec3::from(m)
+        }
+    }
+
+    impl Into<mint::Point3<f32>> for Vec3 {
+        fn into(self) -> mint::Point3<f32> {
+            let m: [f32; 3] = self.into();
+            mint::Point3::from(m)
+        }
+    }
+
     impl From<mint::Vector3<f32>> for Vec3 {
         fn from(m: mint::Vector3<f32>) -> Self {
             let m: [f32; 3] = m.into();
@@ -174,7 +187,6 @@ mod mint_support {
         }
     }
 
-    #[cfg(feature = "mint-support")]
     impl Into<mint::Vector3<f32>> for Vec3 {
         fn into(self) -> mint::Vector3<f32> {
             let m: [f32; 3] = self.into();
