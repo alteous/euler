@@ -1,5 +1,5 @@
 use cgmath;
-use std::mem;
+use std::{mem, ops};
 
 use approx::ApproxEq;
 use cgmath::InnerSpace;
@@ -54,6 +54,68 @@ impl From<[f32; 4]> for Vec4 {
 impl Into<[f32; 4]> for Vec4 {
     fn into(self) -> [f32; 4] {
         [self.x, self.y, self.z, self.w]
+    }
+}
+
+impl ops::Mul<f32> for Vec4 {
+    type Output = Vec4;
+    fn mul(self, rhs: f32) -> Self::Output {
+        Vec4 {
+            x: self.x * rhs,
+            y: self.y * rhs,
+            z: self.z * rhs,
+            w: self.w * rhs,
+        }
+    }
+}
+
+impl ops::Mul<Vec4> for f32 {
+    type Output = Vec4;
+    fn mul(self, rhs: Vec4) -> Self::Output {
+        rhs.mul(self)
+    }
+}
+
+impl ops::Div<f32> for Vec4 {
+    type Output = Vec4;
+    fn div(self, rhs: f32) -> Self::Output {
+        Vec4 {
+            x: self.x / rhs,
+            y: self.y / rhs,
+            z: self.z / rhs,
+            w: self.w / rhs,
+        }
+    }
+}
+
+impl ops::Div<Vec4> for f32 {
+    type Output = Vec4;
+    fn div(self, rhs: Vec4) -> Self::Output {
+        rhs.div(self)
+    }
+}
+
+impl ops::Add<Vec4> for Vec4 {
+    type Output = Vec4;
+    fn add(self, rhs: Vec4) -> Self::Output {
+        Vec4 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+            w: self.w + rhs.w,
+        }
+    }
+}
+
+impl ops::Sub<Vec4> for Vec4 {
+    type Output = Vec4;
+    fn sub(self, rhs: Vec4) -> Self::Output {
+        Vec4 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+            w: self.w - rhs.w,
+        }
     }
 }
 

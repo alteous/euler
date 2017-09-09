@@ -26,8 +26,8 @@ impl Vec2 {
 
     /// Returns a vector in the same direction but with unit magnitude.
     pub fn normalize(self) -> Vec2 {
-        let n: [f32; 2] = cgmath::Vector2::new(self.x, self.y).normalize().into();
-        n.into()
+        let n = cgmath::Vector2::new(self.x, self.y).normalize();
+        vec2!(n.x, n.y)
     }
 }
 

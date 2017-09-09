@@ -4,13 +4,32 @@ An experimental mathematics library for computer graphics.
 
 ## Project ideas
 
- * Strictly 3D.
+ * Specifically for 3D computer graphics.
+ * Layout and handedness follows OpenGL conventions.
  * No distinction between 'point' and 'vector' types.
  * No need to import traits or modules for most functionality.
  * GLSL-like constructors for vectors and matrices.
  * All angles are in radians.
  * All types are base `f32`.
- * Adding two homogeneous 4D vectors is not allowed.
+
+## Demonstration
+
+#### Unprojecting a ray
+
+```rust
+let projection = mat4!();
+let inverse_projection = projection.invert().unwrap();
+let ndc = vec2!(-0.5, 0.5);
+let eye = inverse_projection * vec4!(ndc, -1.0, 1.0);
+let view = euler::Transform {
+    translation: vec3!(1.0, 0.0, -1.0),
+    rotation: quat!(0.0, 0.0, 0.0; 1.0),
+    scale: vec3!(1.0),
+}.matrix();
+let inverse_view = view.invert().unwrap();
+let world = inverse_view * vec4!(eye.xy(), -1.0, 0.0);
+let ray = world.xyz().normalize();
+```
 
 ## License agreement
 

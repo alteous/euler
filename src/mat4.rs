@@ -1,13 +1,14 @@
 use cgmath;
 use std::{mem, ops};
 
+use approx::ApproxEq;
 use cgmath::SquareMatrix;
 use {Transform, Vec4};
 
 /// 4x4 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
-pub struct Mat4(cgmath::Matrix4<f32>);
+pub struct Mat4(pub(crate) cgmath::Matrix4<f32>);
 
 impl Mat4 {
     /// Returns the identity matrix.
@@ -74,6 +75,35 @@ impl From<[[f32; 4]; 4]> for Mat4 {
 impl Into<[[f32; 4]; 4]> for Mat4 {
     fn into(self) -> [[f32; 4]; 4] {
         self.0.into()
+    }
+}
+
+impl ApproxEq for Mat4 {
+    type Epsilon = <f32 as ApproxEq>::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_epsilon()
+    }
+
+    fn default_max_relative() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_max_relative()
+    }
+
+    fn default_max_ulps() -> u32 {
+        <f32 as ApproxEq>::default_max_ulps()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.0.relative_eq(&other.0, epsilon, max_relative)
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.0.ulps_eq(&other.0, epsilon, max_ulps)
     }
 }
 

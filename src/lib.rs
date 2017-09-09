@@ -1,3 +1,5 @@
+//! An experimental mathematics library for computer graphics.
+
 #[macro_use]
 extern crate approx;
 extern crate cgmath;
@@ -151,6 +153,12 @@ mod tests {
     }
 
     #[test]
+    fn vec2_ulps_eq() {
+        assert_ulps_eq!(vec2!(1.0, 2.0), vec2!(1.0, 2.0));
+        assert_ulps_ne!(vec2!(1.0, 2.0), vec2!(1.0, 2.1));
+    }
+
+    #[test]
     fn vec2_plus_vec2() {
         assert_relative_eq!(vec2!(1.6, 4.0), vec2!(1.2, 3.4) + vec2!(0.4, 0.6));
     }
@@ -164,6 +172,12 @@ mod tests {
     fn vec3_relative_eq() {
         assert_relative_eq!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.0));
         assert_relative_ne!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.1));
+    }
+
+    #[test]
+    fn vec3_ulps_eq() {
+        assert_ulps_eq!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.0));
+        assert_ulps_ne!(vec3!(1.0, 2.0, 3.0), vec3!(1.0, 2.0, 3.1));
     }
 
     #[test]
@@ -262,5 +276,11 @@ mod tests {
     fn vec4_relative_eq() {
         assert_relative_eq!(vec4!(1.0, 2.0, 3.0, 1.0), vec4!(1.0, 2.0, 3.0, 1.0));
         assert_relative_ne!(vec4!(1.0, 2.0, 3.0, 1.0), vec4!(1.0, 2.0, 3.0, 0.0));
+    }
+
+    #[test]
+    fn vec4_ulps_eq() {
+        assert_ulps_eq!(vec4!(1.0, 2.0, 3.0, 1.0), vec4!(1.0, 2.0, 3.0, 1.0));
+        assert_ulps_ne!(vec4!(1.0, 2.0, 3.0, 1.0), vec4!(1.0, 2.0, 3.0, 0.0));
     }
 }

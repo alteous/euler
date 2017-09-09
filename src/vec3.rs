@@ -3,7 +3,7 @@ use std::{mem, ops};
 
 use approx::ApproxEq;
 use cgmath::InnerSpace;
-use Vec4;
+use {Vec2, Vec4};
 
 /// 3D vector.
 ///
@@ -41,8 +41,13 @@ impl Vec3 {
 
     /// Returns a vector in the same direction but with unit magnitude.
     pub fn normalize(self) -> Vec3 {
-        let n: [f32; 3] = cgmath::Vector3::new(self.x, self.y, self.z).normalize().into();
-        n.into()
+        let n = cgmath::Vector3::new(self.x, self.y, self.z).normalize();
+        vec3!(n.x, n.y, n.z)
+    }
+
+    /// Returns the XY components of the vector.
+    pub fn xy(self) -> Vec2 {
+        vec2!(self.x, self.y)
     }
 }
 

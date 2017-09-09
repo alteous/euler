@@ -1,13 +1,14 @@
 use cgmath;
 use std::{mem, ops};
 
+use approx::ApproxEq;
 use cgmath::SquareMatrix;
 use Vec2;
 
 /// 2x2 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
-pub struct Mat2(cgmath::Matrix2<f32>);
+pub struct Mat2(pub(crate) cgmath::Matrix2<f32>);
 
 impl Mat2 {
     /// Returns the identity matrix.
@@ -68,6 +69,35 @@ impl<'a> ops::Mul<Vec2> for &'a Mat2 {
     type Output = Vec2;
     fn mul(self, rhs: Vec2) -> Self::Output {
         (*self).mul(rhs)
+    }
+}
+
+impl ApproxEq for Mat2 {
+    type Epsilon = <f32 as ApproxEq>::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_epsilon()
+    }
+
+    fn default_max_relative() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_max_relative()
+    }
+
+    fn default_max_ulps() -> u32 {
+        <f32 as ApproxEq>::default_max_ulps()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.0.relative_eq(&other.0, epsilon, max_relative)
+    }
+
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.0.ulps_eq(&other.0, epsilon, max_ulps)
     }
 }
 
