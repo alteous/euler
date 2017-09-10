@@ -7,10 +7,6 @@ use cgmath::InnerSpace;
 use {Vec2, Vec4};
 
 /// 3D vector.
-///
-/// # Note
-///
-/// The representation is a homogeneous 3D vector with a fixed `w` value of 0.0.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Vec3 {
