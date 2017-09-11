@@ -4,6 +4,7 @@ An experimental mathematics library for computer graphics.
 
 ## Project ideas
 
+ * Wrapper around `cgmath`, solving the most common tasks quickly.
  * Specifically for 3D computer graphics.
  * Layout and handedness follows OpenGL conventions.
  * No distinction between 'point' and 'vector' types.
