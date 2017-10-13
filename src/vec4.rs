@@ -32,6 +32,11 @@ impl Vec4 {
         left.dot(right)
     }
 
+    /// Returns the length of the vector.
+    pub fn len(self) -> f32 {
+        self.dot(self).sqrt()
+    }
+
     /// Returns the XYZ components of the vector.
     pub fn xyz(self) -> Vec3 {
         vec3!(self.x, self.y, self.z)

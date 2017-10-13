@@ -28,6 +28,11 @@ impl Vec3 {
         left.dot(right)
     }
 
+    /// Returns the length of the vector.
+    pub fn len(self) -> f32 {
+        self.dot(self).sqrt()
+    }
+
     /// Returns the cross product of two vectors.
     pub fn cross(self, other: Vec3) -> Vec3 {
         let left = cgmath::Vector3::new(self.x, self.y, self.z);
@@ -45,6 +50,11 @@ impl Vec3 {
     /// Returns the XY components of the vector.
     pub fn xy(self) -> Vec2 {
         vec2!(self.x, self.y)
+    }
+
+    /// Returns the XZ components of the vector.
+    pub fn xz(self) -> Vec2 {
+        vec2!(self.x, self.z)
     }
 }
 
