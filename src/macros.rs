@@ -42,14 +42,18 @@ macro_rules! mat2 {
         $crate::Mat2::identity()
     };
 
+    ($expr:expr) => {
+        $crate::Mat2::from($expr)
+    };
+    
     (
         $m00:expr, $m01:expr,
         $m10:expr, $m11:expr,
     ) => {
-        $crate::Mat2::from([
-            [$m00 as f32, $m01 as f32],
-            [$m10 as f32, $m11 as f32],
-        ])
+        $crate::Mat2::new(
+            $m00 as f32, $m01 as f32,
+            $m10 as f32, $m11 as f32,
+        )
     };
 }
 
@@ -97,14 +101,18 @@ macro_rules! dmat2 {
         $crate::DMat2::identity()
     };
 
+    ($expr:expr) => {
+        $crate::DMat2::from($expr)
+    };
+
     (
         $m00:expr, $m01:expr,
         $m10:expr, $m11:expr,
     ) => {
-        $crate::DMat2::from([
-            [$m00 as f64, $m01 as f64],
-            [$m10 as f64, $m11 as f64],
-        ])
+        $crate::DMat2::new(
+            $m00 as f64, $m01 as f64,
+            $m10 as f64, $m11 as f64,
+        )
     };
 }
 
@@ -155,16 +163,20 @@ macro_rules! mat3 {
         $crate::Mat3::identity()
     };
 
+    ($expr:expr) => {
+        $crate::Mat3::from($expr)
+    };
+
     (
         $m00:expr, $m01:expr, $m02:expr,
         $m10:expr, $m11:expr, $m12:expr,
         $m20:expr, $m21:expr, $m22:expr,
     ) => {
-        $crate::Mat3::from([
-            [$m00 as f32, $m01 as f32, $m02 as f32],
-            [$m10 as f32, $m11 as f32, $m12 as f32],
-            [$m20 as f32, $m21 as f32, $m22 as f32],
-        ])
+        $crate::Mat3::new(
+            $m00 as f32, $m01 as f32, $m02 as f32,
+            $m10 as f32, $m11 as f32, $m12 as f32,
+            $m20 as f32, $m21 as f32, $m22 as f32,
+        )
     };
 }
 
@@ -215,16 +227,20 @@ macro_rules! dmat3 {
         $crate::DMat3::identity()
     };
 
+    ($expr:expr) => {
+        $crate::DMat3::from($expr)
+    };
+
     (
         $m00:expr, $m01:expr, $m02:expr,
         $m10:expr, $m11:expr, $m12:expr,
         $m20:expr, $m21:expr, $m22:expr,
     ) => {
-        $crate::DMat3::from([
-            [$m00 as f64, $m01 as f64, $m02 as f64],
-            [$m10 as f64, $m11 as f64, $m12 as f64],
-            [$m20 as f64, $m21 as f64, $m22 as f64],
-        ])
+        $crate::DMat3::new(
+            $m00 as f64, $m01 as f64, $m02 as f64,
+            $m10 as f64, $m11 as f64, $m12 as f64,
+            $m20 as f64, $m21 as f64, $m22 as f64,
+        )
     };
 }
 
@@ -278,18 +294,22 @@ macro_rules! mat4 {
         $crate::Mat4::identity()
     };
 
+    ($expr:expr) => {
+        $crate::Mat4::from($expr)
+    };
+
     (
         $m00:expr, $m01:expr, $m02:expr, $m03:expr,
         $m10:expr, $m11:expr, $m12:expr, $m13:expr,
         $m20:expr, $m21:expr, $m22:expr, $m23:expr,
         $m30:expr, $m31:expr, $m32:expr, $m33:expr,
     ) => {
-        $crate::Mat4::from([
-            [$m00 as f32, $m01 as f32, $m02 as f32, $m03 as f32],
-            [$m10 as f32, $m11 as f32, $m12 as f32, $m13 as f32],
-            [$m20 as f32, $m21 as f32, $m22 as f32, $m23 as f32],
-            [$m30 as f32, $m31 as f32, $m32 as f32, $m33 as f32],
-        ])
+        $crate::Mat4::new(
+            $m00 as f32, $m01 as f32, $m02 as f32, $m03 as f32,
+            $m10 as f32, $m11 as f32, $m12 as f32, $m13 as f32,
+            $m20 as f32, $m21 as f32, $m22 as f32, $m23 as f32,
+            $m30 as f32, $m31 as f32, $m32 as f32, $m33 as f32,
+        )
     };
 }
 
@@ -343,18 +363,22 @@ macro_rules! dmat4 {
         $crate::DMat4::identity()
     };
 
+    ($expr:expr) => {
+        $crate::DMat4::from($expr)
+    };
+
     (
         $m00:expr, $m01:expr, $m02:expr, $m03:expr,
         $m10:expr, $m11:expr, $m12:expr, $m13:expr,
         $m20:expr, $m21:expr, $m22:expr, $m23:expr,
         $m30:expr, $m31:expr, $m32:expr, $m33:expr,
     ) => {
-        $crate::DMat4::from([
-            [$m00 as f64, $m01 as f64, $m02 as f64, $m03 as f64],
-            [$m10 as f64, $m11 as f64, $m12 as f64, $m13 as f64],
-            [$m20 as f64, $m21 as f64, $m22 as f64, $m23 as f64],
-            [$m30 as f64, $m31 as f64, $m32 as f64, $m33 as f64],
-        ])
+        $crate::DMat4::new(
+            $m00 as f64, $m01 as f64, $m02 as f64, $m03 as f64,
+            $m10 as f64, $m11 as f64, $m12 as f64, $m13 as f64,
+            $m20 as f64, $m21 as f64, $m22 as f64, $m23 as f64,
+            $m30 as f64, $m31 as f64, $m32 as f64, $m33 as f64,
+        )
     };
 }
 
@@ -373,23 +397,27 @@ macro_rules! dmat4 {
 /// Rotation around explicit axis values.
 ///
 /// ```rust
+/// # #[macro_use] extern crate approx;
 /// # #[macro_use] extern crate euler;
+/// # use euler::Quat;
 /// # fn main() {
 /// use std::f32::consts::PI;
 /// let q = quat!(1.0, 0.0, 0.0, PI / 2.0);
-/// assert_eq!(q.as_ref(), &[f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)]);
+/// assert_relative_eq!(q, Quat::new(f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)));
 /// # }
 /// ```
 ///
 /// Rotation around a `Vec3` axis.
 ///
 /// ```rust
+/// # #[macro_use] extern crate approx;
 /// # #[macro_use] extern crate euler;
+/// # use euler::Quat;
 /// # fn main() {
 /// use std::f32::consts::PI;
 /// let axis = vec3!(1.0, 0.0, 0.0);
 /// let q = quat!(axis, PI / 2.0);
-/// assert_eq!(q.as_ref(), &[f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)]);
+/// assert_relative_eq!(q, Quat::new(f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)));
 /// # }
 /// ```
 #[macro_export]
@@ -398,12 +426,19 @@ macro_rules! quat {
         $crate::Quat::identity()
     };
 
-    ($xyz:expr, $r:expr) => {
-        $crate::Quat::rotation_about_axis($xyz, $r)
+    ($expr:expr) => {
+        $crate::Quat::from($expr)
     };
 
-    ($x:expr, $y:expr, $z:expr, $r:expr) => {
-        quat!(vec3!($x, $y, $z), $r)
+    ($axis:expr, $angle:expr) => {
+        $crate::Quat::axis_angle($axis, $angle as f32)
+    };
+
+    ($x:expr, $y:expr, $z:expr, $angle:expr) => {
+        $crate::Quat::axis_angle(
+            $crate::Vec3::new($x as f32, $y as f32, $z as f32),
+            $angle as f32,
+        )
     };
 }
 
@@ -422,23 +457,27 @@ macro_rules! quat {
 /// Rotation around explicit axis values.
 ///
 /// ```rust
+/// # #[macro_use] extern crate approx;
 /// # #[macro_use] extern crate euler;
+/// # use euler::DQuat;
 /// # fn main() {
 /// use std::f64::consts::PI;
 /// let q = dquat!(1.0, 0.0, 0.0, PI / 2.0);
-/// assert_eq!(q.as_ref(), &[f64::cos(PI / 4.0), 0.0, 0.0, f64::sin(PI / 4.0)]);
+/// assert_relative_eq!(q, DQuat::new(f64::cos(PI / 4.0), 0.0, 0.0, f64::sin(PI / 4.0)));
 /// # }
 /// ```
 ///
 /// Rotation around a `DVec3` axis.
 ///
 /// ```rust
+/// # #[macro_use] extern crate approx;
 /// # #[macro_use] extern crate euler;
+/// # use euler::DQuat;
 /// # fn main() {
 /// use std::f64::consts::PI;
 /// let axis = dvec3!(1.0, 0.0, 0.0);
 /// let q = dquat!(axis, PI / 2.0);
-/// assert_eq!(q.as_ref(), &[f64::cos(PI / 4.0), 0.0, 0.0, f64::sin(PI / 4.0)]);
+/// assert_relative_eq!(q, DQuat::new(f64::cos(PI / 4.0), 0.0, 0.0, f64::sin(PI / 4.0)));
 /// # }
 /// ```
 #[macro_export]
@@ -447,12 +486,19 @@ macro_rules! dquat {
         $crate::DQuat::identity()
     };
 
-    ($xyz:expr, $r:expr) => {
-        $crate::DQuat::rotation_about_axis($xyz, $r as f64)
+    ($expr:expr) => {
+        $crate::DQuat::from($expr)
     };
 
-    ($x:expr, $y:expr, $z:expr, $r:expr) => {
-        dquat!(dvec3!($x as f64, $y as f64, $z as f64), $r as f64)
+    ($axis:expr, $angle:expr) => {
+        $crate::DQuat::axis_angle($axis, $angle as f64)
+    };
+
+    ($x:expr, $y:expr, $z:expr, $angle:expr) => {
+        $crate::DQuat::axis_angle(
+            $crate::DVec3::new($x as f64, $y as f64, $z as f64),
+            $angle as f64,
+        )
     };
 }
 
@@ -492,15 +538,15 @@ macro_rules! dquat {
 #[macro_export]
 macro_rules! vec2 {
     () => {
-        $crate::Vec2 { x: 0.0 as f32, y: 0.0 as f32 }
+        $crate::Vec2::default()
     };
 
-    ($x:expr) => {
-        $crate::Vec2 { x: $x as f32, y: $x as f32 }
+    ($expr:expr) => {
+        $crate::Vec2::from($expr)
     };
 
     ($x:expr, $y:expr) => {
-        $crate::Vec2 { x: $x as f32, y: $y as f32 }
+        $crate::Vec2::new($x as f32, $y as f32)
     };
 }
 
@@ -540,15 +586,15 @@ macro_rules! vec2 {
 #[macro_export]
 macro_rules! dvec2 {
     () => {
-        $crate::DVec2 { x: 0.0 as f64, y: 0.0 as f64 }
+        $crate::DVec2::default()
     };
 
-    ($x:expr) => {
-        $crate::DVec2 { x: $x as f64, y: $x as f64 }
+    ($expr:expr) => {
+        $crate::DVec2::from($expr)
     };
 
     ($x:expr, $y:expr) => {
-        $crate::DVec2 { x: $x as f64, y: $y as f64 }
+        $crate::DVec2::new($x as f64, $y as f64)
     };
 }
 
@@ -599,23 +645,19 @@ macro_rules! dvec2 {
 #[macro_export]
 macro_rules! vec3 {
     () => {
-        $crate::Vec3 { x: 0.0 as f32, y: 0.0 as f32, z: 0.0 as f32 }
+        $crate::Vec3::default()
     };
 
-    ($xyz:expr) => {
-        $crate::Vec3 { x: $xyz as f32, y: $xyz as f32, z: $xyz as f32 }
+    ($expr:expr) => {
+        $crate::Vec3::from($expr)
     };
-    
+
     ($xy:expr, $z:expr) => {
-        $crate::Vec3 {
-            x: $crate::Vec2::from($xy).x,
-            y: $crate::Vec2::from($xy).y,
-            z: $z as f32,
-        }
+        $crate::Vec3::from(($xy, $z as f32))
     };
 
     ($x:expr, $y:expr, $z:expr) => {
-        $crate::Vec3 { x: $x as f32, y: $y as f32, z: $z as f32 }
+        $crate::Vec3::new($x as f32, $y as f32, $z as f32)
     };
 }
 
@@ -666,23 +708,19 @@ macro_rules! vec3 {
 #[macro_export]
 macro_rules! dvec3 {
     () => {
-        $crate::DVec3 { x: 0.0 as f64, y: 0.0 as f64, z: 0.0 as f64 }
+        $crate::DVec3::default()
     };
 
-    ($xyz:expr) => {
-        $crate::DVec3 { x: $xyz as f64, y: $xyz as f64, z: $xyz as f64 }
+    ($expr:expr) => {
+        $crate::DVec3::from($expr)
     };
-    
+
     ($xy:expr, $z:expr) => {
-        $crate::DVec3 {
-            x: $crate::DVec2::from($xy).x,
-            y: $crate::DVec2::from($xy).y,
-            z: $z as f64,
-        }
+        $crate::DVec3::from(($xy, $z as f64))
     };
 
     ($x:expr, $y:expr, $z:expr) => {
-        $crate::DVec3 { x: $x as f64, y: $y as f64, z: $z as f64 }
+        $crate::DVec3::new($x as f64, $y as f64, $z as f64)
     };
 }
 
@@ -744,48 +782,23 @@ macro_rules! dvec3 {
 #[macro_export]
 macro_rules! vec4 {
     () => {
-        $crate::Vec4 {
-            x: 0.0 as f32,
-            y: 0.0 as f32,
-            z: 0.0 as f32,
-            w: 0.0 as f32,
-        }
+        $crate::Vec4::default()
     };
 
-    ($xyzw:expr) => {
-        $crate::Vec4 {
-            x: $xyzw as f32,
-            y: $xyzw as f32,
-            z: $xyzw as f32,
-            w: $xyzw as f32,
-        }
+    ($expr:expr) => {
+        $crate::Vec4::from($expr)
     };
 
     ($xyz:expr, $w:expr) => {
-        $crate::Vec4 {
-            x: $crate::Vec3::from($xyz).x,
-            y: $crate::Vec3::from($xyz).y,
-            z: $crate::Vec3::from($xyz).z,
-            w: $w as f32,
-        }
+        $crate::Vec4::from(($xyz, $w as f32))
     };
 
     ($xy:expr, $z:expr, $w:expr) => {
-        $crate::Vec4 {
-            x: $crate::Vec2::from($xy).x,
-            y: $crate::Vec2::from($xy).y,
-            z: $z as f32,
-            w: $w as f32,
-        }
+        $crate::Vec4::from(($xy, $z as f32, $w as f32))
     };
 
     ($x:expr, $y:expr, $z:expr, $w:expr) => {
-        $crate::Vec4 {
-            x: $x as f32,
-            y: $y as f32,
-            z: $z as f32,
-            w: $w as f32,
-        }
+        $crate::Vec4::new($x as f32, $y as f32, $z as f32, $w as f32)
     };
 }
 
@@ -847,47 +860,22 @@ macro_rules! vec4 {
 #[macro_export]
 macro_rules! dvec4 {
     () => {
-        $crate::DVec4 {
-            x: 0.0 as f64,
-            y: 0.0 as f64,
-            z: 0.0 as f64,
-            w: 0.0 as f64,
-        }
+        $crate::DVec4::default()
     };
 
-    ($xyzw:expr) => {
-        $crate::DVec4 {
-            x: $xyzw as f64,
-            y: $xyzw as f64,
-            z: $xyzw as f64,
-            w: $xyzw as f64,
-        }
+    ($expr:expr) => {
+        $crate::DVec4::from($expr)
     };
 
     ($xyz:expr, $w:expr) => {
-        $crate::DVec4 {
-            x: $crate::DVec3::from($xyz).x,
-            y: $crate::DVec3::from($xyz).y,
-            z: $crate::DVec3::from($xyz).z,
-            w: $w as f64,
-        }
+        $crate::DVec4::from(($xyz, $w as f64))
     };
 
     ($xy:expr, $z:expr, $w:expr) => {
-        $crate::DVec4 {
-            x: $crate::DVec2::from($xy).x,
-            y: $crate::DVec2::from($xy).y,
-            z: $z as f64,
-            w: $w as f64,
-        }
+        $crate::DVec4::from(($xy, $z as f64, $w as f64))
     };
 
     ($x:expr, $y:expr, $z:expr, $w:expr) => {
-        $crate::DVec4 {
-            x: $x as f64,
-            y: $y as f64,
-            z: $z as f64,
-            w: $w as f64,
-        }
+        $crate::DVec4::new($x as f64, $y as f64, $z as f64, $w as f64)
     };
 }
