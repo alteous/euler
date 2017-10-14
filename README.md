@@ -11,7 +11,7 @@ An experimental mathematics library for computer graphics.
  * No need to import traits or modules for most functionality.
  * GLSL-like constructors for vectors and matrices.
  * All angles are in radians.
- * All types are base `f32`.
+ * ~~All types are base `f32`.~~ Only `f32` and `f64` types are supported.
 
 ## Demonstration
 
