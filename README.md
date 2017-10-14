@@ -11,7 +11,7 @@ An experimental mathematics library for computer graphics.
  * No need to import traits or modules for most functionality.
  * GLSL-like constructors for vectors and matrices.
  * All angles are in radians.
- * ~~All types are base `f32`.~~ Only `f32` and `f64` types are supported.
+ * ~~All types are base `f32`.~~ Only `f32` and `f64` bases are supported.
 
 ## Demonstration
 
@@ -22,11 +22,7 @@ let projection = mat4!();
 let inverse_projection = projection.invert();
 let ndc = vec2!(-0.5, 0.5);
 let eye = inverse_projection * vec4!(ndc, -1, 1);
-let view = euler::Trs {
-    t: vec3!(1, 0, -1),
-    r: quat!(1, 0, 0; std::f32::consts::PI / 2.0),
-    s: vec3!(1.0),
-}.matrix();
+let view = euler::Trs::new(vec3!(1, 0, -1), quat!(1, 0, 0; std::f32::consts::PI / 2.0), vec3!(1.0)).matrix();
 let inverse_view = view.invert();
 let world = inverse_view * vec4!(eye.xy(), -1, 0);
 let ray = world.xyz().normalize();
