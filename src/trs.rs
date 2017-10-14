@@ -1,5 +1,7 @@
 use cgmath;
+use std::fmt;
 
+use approx::ApproxEq;
 use {DQuat, DMat4, DVec3, Quat, Mat4, Vec3};
 
 /// Single-precision translation + rotation + non-uniform scale transform.
@@ -13,6 +15,12 @@ pub struct Trs {
 
     /// *Non-uniform* scale factor.
     pub s: Vec3,
+}
+
+impl fmt::Display for Trs {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", (self.t, self.r, self.s))
+    }
 }
 
 impl Default for Trs {
@@ -46,6 +54,48 @@ impl Trs {
     }
 }
 
+impl ApproxEq for Trs {
+    type Epsilon = <f32 as ApproxEq>::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_epsilon()
+    }
+
+    fn default_max_relative() -> Self::Epsilon {
+        <f32 as ApproxEq>::default_max_relative()
+    }
+
+    fn default_max_ulps() -> u32 {
+        <f32 as ApproxEq>::default_max_ulps()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.t.relative_eq(&other.t, epsilon, max_relative)
+            &&    
+        self.r.relative_eq(&other.r, epsilon, max_relative)
+            &&
+        self.s.relative_eq(&other.s, epsilon, max_relative)
+    }
+
+    fn ulps_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_ulps: u32,
+    ) -> bool {
+        self.t.ulps_eq(&other.t, epsilon, max_ulps)
+            &&
+        self.r.ulps_eq(&other.r, epsilon, max_ulps)
+            &&
+        self.s.ulps_eq(&other.s, epsilon, max_ulps)
+    }
+}
+
 /// Double-precision translation + rotation + non-uniform scale transform.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct DTrs {
@@ -57,6 +107,12 @@ pub struct DTrs {
 
     /// *Non-uniform* scale factor.
     pub s: DVec3,
+}
+
+impl fmt::Display for DTrs {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", (self.t, self.r, self.s))
+    }
 }
 
 impl Default for DTrs {
@@ -87,5 +143,47 @@ impl DTrs {
         let s = cgmath::Matrix4::from_nonuniform_scale(self.s.x, self.s.y, self.s.z);
         let m: [[f64; 4]; 4] = (t * r * s).into();
         DMat4::from(m)
+    }
+}
+
+impl ApproxEq for DTrs {
+    type Epsilon = <f64 as ApproxEq>::Epsilon;
+
+    fn default_epsilon() -> Self::Epsilon {
+        <f64 as ApproxEq>::default_epsilon()
+    }
+
+    fn default_max_relative() -> Self::Epsilon {
+        <f64 as ApproxEq>::default_max_relative()
+    }
+
+    fn default_max_ulps() -> u32 {
+        <f64 as ApproxEq>::default_max_ulps()
+    }
+
+    fn relative_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_relative: Self::Epsilon,
+    ) -> bool {
+        self.t.relative_eq(&other.t, epsilon, max_relative)
+            &&    
+        self.r.relative_eq(&other.r, epsilon, max_relative)
+            &&
+        self.s.relative_eq(&other.s, epsilon, max_relative)
+    }
+
+    fn ulps_eq(
+        &self,
+        other: &Self,
+        epsilon: Self::Epsilon,
+        max_ulps: u32,
+    ) -> bool {
+        self.t.ulps_eq(&other.t, epsilon, max_ulps)
+            &&
+        self.r.ulps_eq(&other.r, epsilon, max_ulps)
+            &&
+        self.s.ulps_eq(&other.s, epsilon, max_ulps)
     }
 }

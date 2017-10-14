@@ -1,6 +1,6 @@
 use approx::ApproxEq;
 use cgmath;
-use std::{mem, ops};
+use std::{fmt, mem, ops};
 use {DVec2, DVec3, DVec4, Vec2, Vec3, Vec4};
 
 /// Single-precision 2x2 column major matrix.
@@ -9,6 +9,17 @@ use {DVec2, DVec3, DVec4, Vec2, Vec3, Vec4};
 pub struct Mat2 {
     m00: f32, m01: f32,
     m10: f32, m11: f32,
+}
+
+impl fmt::Display for Mat2 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "({}, {}; {}, {})",
+            self.m00, self.m01,
+            self.m10, self.m11,
+        )
+    }
 }
 
 impl Mat2 {
@@ -98,6 +109,17 @@ pub struct DMat2 {
     m10: f64, m11: f64,
 }
 
+impl fmt::Display for DMat2 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "({}, {}; {}, {})",
+            self.m00, self.m01,
+            self.m10, self.m11,
+        )
+    }
+}
+
 impl DMat2 {
     /// Full constructor.
     pub fn new(
@@ -184,6 +206,18 @@ pub struct Mat3 {
     m00: f32, m01: f32, m02: f32,
     m10: f32, m11: f32, m12: f32,
     m20: f32, m21: f32, m22: f32,
+}
+
+impl fmt::Display for Mat3 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "({}, {}, {}; {}, {}, {}; {}, {}, {})",
+            self.m00, self.m01, self.m02,
+            self.m10, self.m11, self.m12,
+            self.m20, self.m21, self.m22,
+        )
+    }
 }
 
 impl Mat3 {
@@ -287,6 +321,18 @@ pub struct DMat3 {
     m20: f64, m21: f64, m22: f64,
 }
 
+impl fmt::Display for DMat3 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "({}, {}, {}; {}, {}, {}; {}, {}, {})",
+            self.m00, self.m01, self.m02,
+            self.m10, self.m11, self.m12,
+            self.m20, self.m21, self.m22,
+        )
+    }
+}
+
 impl DMat3 {
     /// Full constructor.
     pub fn new(
@@ -383,6 +429,19 @@ pub struct Mat4 {
     m10: f32, m11: f32, m12: f32, m13: f32,
     m20: f32, m21: f32, m22: f32, m23: f32,
     m30: f32, m31: f32, m32: f32, m33: f32,
+}
+
+impl fmt::Display for Mat4 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "({}, {}, {}, {}; {}, {}, {}, {}; {}, {}, {}, {}; {}, {}, {}, {})",
+            self.m00, self.m01, self.m02, self.m03,
+            self.m10, self.m11, self.m12, self.m13,
+            self.m20, self.m21, self.m22, self.m23,
+            self.m30, self.m31, self.m32, self.m33,
+        )
+    }
 }
 
 impl Mat4 {
@@ -482,6 +541,19 @@ pub struct DMat4 {
     m10: f64, m11: f64, m12: f64, m13: f64,
     m20: f64, m21: f64, m22: f64, m23: f64,
     m30: f64, m31: f64, m32: f64, m33: f64,
+}
+
+impl fmt::Display for DMat4 {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "({}, {}, {}, {}; {}, {}, {}, {}; {}, {}, {}, {}; {}, {}, {}, {})",
+            self.m00, self.m01, self.m02, self.m03,
+            self.m10, self.m11, self.m12, self.m13,
+            self.m20, self.m21, self.m22, self.m23,
+            self.m30, self.m31, self.m32, self.m33,
+        )
+    }
 }
 
 impl DMat4 {
