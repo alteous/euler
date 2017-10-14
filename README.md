@@ -21,14 +21,14 @@ An experimental mathematics library for computer graphics.
 let projection = mat4!();
 let inverse_projection = projection.invert();
 let ndc = vec2!(-0.5, 0.5);
-let eye = inverse_projection * vec4!(ndc, -1.0, 1.0);
-let view = euler::Transform {
-    translation: vec3!(1.0, 0.0, -1.0),
-    rotation: quat!(1.0, 0.0, 0.0, PI / 2.0),
-    scale: vec3!(1.0),
+let eye = inverse_projection * vec4!(ndc, -1, 1);
+let view = euler::Trs {
+    t: vec3!(1, 0, -1),
+    r: quat!(1, 0, 0; std::f32::consts::PI / 2.0),
+    s: vec3!(1.0),
 }.matrix();
 let inverse_view = view.invert();
-let world = inverse_view * vec4!(eye.xy(), -1.0, 0.0);
+let world = inverse_view * vec4!(eye.xy(), -1, 0);
 let ray = world.xyz().normalize();
 ```
 
