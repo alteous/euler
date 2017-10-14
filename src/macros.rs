@@ -402,7 +402,7 @@ macro_rules! dmat4 {
 /// # use euler::Quat;
 /// # fn main() {
 /// use std::f32::consts::PI;
-/// let q = quat!(1.0, 0.0, 0.0, PI / 2.0);
+/// let q = quat!(1.0, 0.0, 0.0; PI / 2.0);
 /// assert_relative_eq!(q, Quat::new(f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)));
 /// # }
 /// ```
@@ -416,7 +416,7 @@ macro_rules! dmat4 {
 /// # fn main() {
 /// use std::f32::consts::PI;
 /// let axis = vec3!(1.0, 0.0, 0.0);
-/// let q = quat!(axis, PI / 2.0);
+/// let q = quat!(axis; PI / 2.0);
 /// assert_relative_eq!(q, Quat::new(f32::cos(PI / 4.0), 0.0, 0.0, f32::sin(PI / 4.0)));
 /// # }
 /// ```
@@ -430,11 +430,11 @@ macro_rules! quat {
         $crate::Quat::from($expr)
     };
 
-    ($axis:expr, $angle:expr) => {
+    ($axis:expr; $angle:expr) => {
         $crate::Quat::axis_angle($axis, $angle as f32)
     };
 
-    ($x:expr, $y:expr, $z:expr, $angle:expr) => {
+    ($x:expr, $y:expr, $z:expr; $angle:expr) => {
         $crate::Quat::axis_angle(
             $crate::Vec3::new($x as f32, $y as f32, $z as f32),
             $angle as f32,
@@ -462,7 +462,7 @@ macro_rules! quat {
 /// # use euler::DQuat;
 /// # fn main() {
 /// use std::f64::consts::PI;
-/// let q = dquat!(1.0, 0.0, 0.0, PI / 2.0);
+/// let q = dquat!(1.0, 0.0, 0.0; PI / 2.0);
 /// assert_relative_eq!(q, DQuat::new(f64::cos(PI / 4.0), 0.0, 0.0, f64::sin(PI / 4.0)));
 /// # }
 /// ```
@@ -476,7 +476,7 @@ macro_rules! quat {
 /// # fn main() {
 /// use std::f64::consts::PI;
 /// let axis = dvec3!(1.0, 0.0, 0.0);
-/// let q = dquat!(axis, PI / 2.0);
+/// let q = dquat!(axis; PI / 2.0);
 /// assert_relative_eq!(q, DQuat::new(f64::cos(PI / 4.0), 0.0, 0.0, f64::sin(PI / 4.0)));
 /// # }
 /// ```
@@ -490,11 +490,11 @@ macro_rules! dquat {
         $crate::DQuat::from($expr)
     };
 
-    ($axis:expr, $angle:expr) => {
+    ($axis:expr; $angle:expr) => {
         $crate::DQuat::axis_angle($axis, $angle as f64)
     };
 
-    ($x:expr, $y:expr, $z:expr, $angle:expr) => {
+    ($x:expr, $y:expr, $z:expr; $angle:expr) => {
         $crate::DQuat::axis_angle(
             $crate::DVec3::new($x as f64, $y as f64, $z as f64),
             $angle as f64,

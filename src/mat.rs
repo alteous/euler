@@ -1,6 +1,7 @@
 use approx::ApproxEq;
 use cgmath;
 use std::{mem, ops};
+use {DVec2, DVec3, DVec4, Vec2, Vec3, Vec4};
 
 /// Single-precision 2x2 column major matrix.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -573,51 +574,59 @@ impl From<Mat4> for DMat4 {
 }
 
 macro_rules! impl_matrix {
-    ($self:ident, $base:ty, $inner:ty, $array:ty) => {
-        impl ApproxEq for $self {
-            type Epsilon = <$inner as ApproxEq>::Epsilon;
-
-            fn default_epsilon() -> Self::Epsilon {
-                <$inner as ApproxEq>::default_epsilon()
+    ($self:ident, $minner:ty, $marray:ty, $vec:ty, $vinner:ty, $varray:ty, $base:ty) => {
+        impl $self {
+            /// Computes the matrix determinant.
+            pub fn determinant(self) -> $base {
+                use cgmath::SquareMatrix;
+                let a: &$minner = self.as_ref().into();
+                a.determinant()
             }
 
-            fn default_max_relative() -> Self::Epsilon {
-                <$inner as ApproxEq>::default_max_relative()
+            /// Computes the matrix trace.
+            pub fn trace(self) -> $base {
+                use cgmath::SquareMatrix;
+                let a: &$minner = self.as_ref().into();
+                a.trace()
             }
 
-            fn default_max_ulps() -> u32 {
-                <$inner as ApproxEq>::default_max_ulps()
+            /// Computes the matrix inverse.
+            ///
+            /// ## Panics
+            ///
+            /// Panics if the matrix has no inverse (i.e. has zero determinant).
+            pub fn invert(self) -> $self {
+                self.try_invert().unwrap()
             }
 
-            fn relative_eq(
-                &self,
-                other: &Self,
-                epsilon: Self::Epsilon,
-                max_relative: Self::Epsilon,
-            ) -> bool {
-                let a: &$inner = self.as_ref().into();
-                let b: &$inner = other.as_ref().into();
-                a.relative_eq(&b, epsilon, max_relative)
+            /// Returns the matrix transpose.
+            pub fn transpose(self) -> $self {
+                use cgmath::SquareMatrix;
+                let a: &$minner = self.as_ref().into();
+                let mut b = *a;
+                b.transpose_self();
+                let m: $marray = b.into();
+                m.into()
             }
 
-            fn ulps_eq(
-                &self,
-                other: &Self,
-                epsilon: Self::Epsilon,
-                max_ulps: u32,
-            ) -> bool {
-                let a: &$inner = self.as_ref().into();
-                let b: &$inner = other.as_ref().into();
-                a.ulps_eq(&b, epsilon, max_ulps)
+            /// Attempts to compute the matrix inverse, returning `None` if the matrix is
+            /// non-invertible (i.e. has zero determinant).
+            pub fn try_invert(self) -> Option<$self> {
+                use cgmath::SquareMatrix;
+                let a: &$minner = self.as_ref().into();
+                a.invert().map(|inv| {
+                    let b: $marray = inv.into();
+                    b.into()
+                })
             }
         }
 
         impl ops::Add<$self> for $self {
             type Output = $self;
             fn add(self, rhs: $self) -> Self::Output {
-                let a: &$inner = self.as_ref().into();
-                let b: &$inner = rhs.as_ref().into();
-                let m: $array = (a + b).into();
+                let a: &$minner = self.as_ref().into();
+                let b: &$minner = rhs.as_ref().into();
+                let m: $marray = (a + b).into();
                 m.into()
             }
         }
@@ -625,9 +634,9 @@ macro_rules! impl_matrix {
         impl ops::Sub<$self> for $self {
             type Output = $self;
             fn sub(self, rhs: $self) -> Self::Output {
-                let a: &$inner = self.as_ref().into();
-                let b: &$inner = rhs.as_ref().into();
-                let m: $array = (a - b).into();
+                let a: &$minner = self.as_ref().into();
+                let b: &$minner = rhs.as_ref().into();
+                let m: $marray = (a - b).into();
                 m.into()
             }
         }
@@ -635,12 +644,22 @@ macro_rules! impl_matrix {
         impl ops::Mul<$base> for $self {
             type Output = $self;
             fn mul(self, rhs: $base) -> Self::Output {
-                let a: &$inner = self.as_ref().into();
-                let v: $array = (a * rhs).into();
+                let a: &$minner = self.as_ref().into();
+                let v: $marray = (a * rhs).into();
                 v.into()
             }
         }
 
+        impl ops::Mul<$vec> for $self {
+            type Output = $vec;
+            fn mul(self, rhs: $vec) -> Self::Output {
+                let a: &$minner = self.as_ref().into();
+                let b: &$vinner = rhs.as_ref().into();
+                let v: $varray = (a * b).into();
+                v.into()
+            }
+        }
+        
         impl ops::Mul<$self> for $base {
             type Output = $self;
             fn mul(self, rhs: $self) -> Self::Output {
@@ -651,9 +670,9 @@ macro_rules! impl_matrix {
         impl ops::Mul<$self> for $self {
             type Output = $self;
             fn mul(self, rhs: $self) -> Self::Output {
-                let a: &$inner = self.as_ref().into();
-                let b: &$inner = rhs.as_ref().into();
-                let v: $array = (a * b).into();
+                let a: &$minner = self.as_ref().into();
+                let b: &$minner = rhs.as_ref().into();
+                let v: $marray = (a * b).into();
                 v.into()
             }
         }
@@ -664,36 +683,74 @@ macro_rules! impl_matrix {
             }
         }
 
-        impl AsRef<$array> for $self {
-            fn as_ref(&self) -> &$array {
+        impl AsRef<$marray> for $self {
+            fn as_ref(&self) -> &$marray {
                 unsafe {
                     mem::transmute(self)
                 }
             }
         }
 
-        impl From<$array> for $self {
-            fn from(array: $array) -> Self {
+        impl From<$marray> for $self {
+            fn from(array: $marray) -> Self {
                 unsafe {
                     mem::transmute(array)
                 }
             }
         }
 
-        impl Into<$array> for $self {
-            fn into(self) -> $array {
+        impl Into<$marray> for $self {
+            fn into(self) -> $marray {
                 unsafe {
                     mem::transmute(self)
                 }
             }
         }
+
+        impl ApproxEq for $self {
+            type Epsilon = <$minner as ApproxEq>::Epsilon;
+
+            fn default_epsilon() -> Self::Epsilon {
+                <$minner as ApproxEq>::default_epsilon()
+            }
+
+            fn default_max_relative() -> Self::Epsilon {
+                <$minner as ApproxEq>::default_max_relative()
+            }
+
+            fn default_max_ulps() -> u32 {
+                <$minner as ApproxEq>::default_max_ulps()
+            }
+
+            fn relative_eq(
+                &self,
+                other: &Self,
+                epsilon: Self::Epsilon,
+                max_relative: Self::Epsilon,
+            ) -> bool {
+                let a: &$minner = self.as_ref().into();
+                let b: &$minner = other.as_ref().into();
+                a.relative_eq(&b, epsilon, max_relative)
+            }
+
+            fn ulps_eq(
+                &self,
+                other: &Self,
+                epsilon: Self::Epsilon,
+                max_ulps: u32,
+            ) -> bool {
+                let a: &$minner = self.as_ref().into();
+                let b: &$minner = other.as_ref().into();
+                a.ulps_eq(&b, epsilon, max_ulps)
+            }
+        }
     };
 }
 
-impl_matrix!(Mat2, f32, cgmath::Matrix2<f32>, [[f32; 2]; 2]);
-impl_matrix!(Mat3, f32, cgmath::Matrix3<f32>, [[f32; 3]; 3]);
-impl_matrix!(Mat4, f32, cgmath::Matrix4<f32>, [[f32; 4]; 4]);
+impl_matrix!(Mat2, cgmath::Matrix2<f32>, [[f32; 2]; 2], Vec2, cgmath::Vector2<f32>, [f32; 2], f32);
+impl_matrix!(Mat3, cgmath::Matrix3<f32>, [[f32; 3]; 3], Vec3, cgmath::Vector3<f32>, [f32; 3], f32);
+impl_matrix!(Mat4, cgmath::Matrix4<f32>, [[f32; 4]; 4], Vec4, cgmath::Vector4<f32>, [f32; 4], f32);
 
-impl_matrix!(DMat2, f64, cgmath::Matrix2<f64>, [[f64; 2]; 2]);
-impl_matrix!(DMat3, f64, cgmath::Matrix3<f64>, [[f64; 3]; 3]);
-impl_matrix!(DMat4, f64, cgmath::Matrix4<f64>, [[f64; 4]; 4]);
+impl_matrix!(DMat2, cgmath::Matrix2<f64>, [[f64; 2]; 2], DVec2, cgmath::Vector2<f64>, [f64; 2], f64);
+impl_matrix!(DMat3, cgmath::Matrix3<f64>, [[f64; 3]; 3], DVec3, cgmath::Vector3<f64>, [f64; 3], f64);
+impl_matrix!(DMat4, cgmath::Matrix4<f64>, [[f64; 4]; 4], DVec4, cgmath::Vector4<f64>, [f64; 4], f64);

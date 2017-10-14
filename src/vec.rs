@@ -65,6 +65,11 @@ impl Vec3 {
     pub fn zero() -> Self {
         Default::default()
     }
+
+    /// Returns the XY components of the vector.
+    pub fn xy(self) -> Vec2 {
+        Vec2::new(self.x, self.y)
+    }
 }
 
 impl From<f32> for Vec3 {
@@ -116,6 +121,16 @@ impl Vec4 {
     /// Zero constructor.
     pub fn zero() -> Self {
         Default::default()
+    }
+
+    /// Returns the XY components of the vector.
+    pub fn xy(self) -> Vec2 {
+        Vec2::new(self.x, self.y)
+    }
+
+    /// Returns the XYZ components of the vector.
+    pub fn xyz(self) -> Vec3 {
+        Vec3::new(self.x, self.y, self.z)
     }
 }
 
@@ -218,6 +233,11 @@ impl DVec3 {
     pub fn zero() -> Self {
         Default::default()
     }
+
+    /// Returns the XY components of the vector.
+    pub fn xy(self) -> DVec2 {
+        DVec2::new(self.x, self.y)
+    }
 }
 
 impl From<f32> for DVec3 {
@@ -269,6 +289,16 @@ impl DVec4 {
     /// Zero constructor.
     pub fn zero() -> Self {
         Default::default()
+    }
+
+    /// Returns the XY components of the vector.
+    pub fn xy(self) -> DVec2 {
+        DVec2::new(self.x, self.y)
+    }
+
+    /// Returns the XYZ components of the vector.
+    pub fn xyz(self) -> DVec3 {
+        DVec3::new(self.x, self.y, self.z)
     }
 }
 
@@ -337,6 +367,32 @@ macro_rules! impl_vector {
                 let a: &$inner = self.as_ref().into();
                 let b: &$inner = rhs.as_ref().into();
                 a.dot(*b)
+            }
+
+            /// Returns the length (magnitude) of the vector.
+            pub fn length(self) -> $base {
+                use cgmath::InnerSpace;
+                let a: &$inner = self.as_ref().into();
+                a.magnitude()
+            }
+
+            /// Returns the squared length of the vector.
+            pub fn squared_length(self) -> $base {
+                use cgmath::InnerSpace;
+                let a: &$inner = self.as_ref().into();
+                a.magnitude2()
+            }
+
+            /// Scales the vector to unit length.
+            ///
+            /// ## Panics
+            ///
+            /// Panics if the vector is zero.
+            pub fn normalize(self) -> $self {
+                use cgmath::InnerSpace;
+                let a: &$inner = self.as_ref().into();
+                let v: $array = a.normalize().into();
+                v.into()
             }
         }
 
