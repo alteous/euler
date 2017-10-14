@@ -7,8 +7,8 @@ use {DVec2, DVec3, DVec4, Vec2, Vec3, Vec4};
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Mat2 {
-    m00: f32, m01: f32,
-    m10: f32, m11: f32,
+    pub m00: f32, pub m01: f32,
+    pub m10: f32, pub m11: f32,
 }
 
 impl fmt::Display for Mat2 {
@@ -105,8 +105,8 @@ impl From<DMat4> for Mat2 {
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct DMat2 {
-    m00: f64, m01: f64,
-    m10: f64, m11: f64,
+    pub m00: f64, pub m01: f64,
+    pub m10: f64, pub m11: f64,
 }
 
 impl fmt::Display for DMat2 {
@@ -203,9 +203,9 @@ impl From<DMat4> for DMat2 {
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Mat3 {
-    m00: f32, m01: f32, m02: f32,
-    m10: f32, m11: f32, m12: f32,
-    m20: f32, m21: f32, m22: f32,
+    pub m00: f32, pub m01: f32, pub m02: f32,
+    pub m10: f32, pub m11: f32, pub m12: f32,
+    pub m20: f32, pub m21: f32, pub m22: f32,
 }
 
 impl fmt::Display for Mat3 {
@@ -316,9 +316,9 @@ impl From<DMat4> for Mat3 {
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct DMat3 {
-    m00: f64, m01: f64, m02: f64,
-    m10: f64, m11: f64, m12: f64,
-    m20: f64, m21: f64, m22: f64,
+    pub m00: f64, pub m01: f64, pub m02: f64,
+    pub m10: f64, pub m11: f64, pub m12: f64,
+    pub m20: f64, pub m21: f64, pub m22: f64,
 }
 
 impl fmt::Display for DMat3 {
@@ -425,10 +425,10 @@ impl From<DMat4> for DMat3 {
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct Mat4 {
-    m00: f32, m01: f32, m02: f32, m03: f32,
-    m10: f32, m11: f32, m12: f32, m13: f32,
-    m20: f32, m21: f32, m22: f32, m23: f32,
-    m30: f32, m31: f32, m32: f32, m33: f32,
+    pub m00: f32, pub m01: f32, pub m02: f32, pub m03: f32,
+    pub m10: f32, pub m11: f32, pub m12: f32, pub m13: f32,
+    pub m20: f32, pub m21: f32, pub m22: f32, pub m23: f32,
+    pub m30: f32, pub m31: f32, pub m32: f32, pub m33: f32,
 }
 
 impl fmt::Display for Mat4 {
@@ -537,10 +537,10 @@ impl From<DMat4> for Mat4 {
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[repr(C)]
 pub struct DMat4 {
-    m00: f64, m01: f64, m02: f64, m03: f64,
-    m10: f64, m11: f64, m12: f64, m13: f64,
-    m20: f64, m21: f64, m22: f64, m23: f64,
-    m30: f64, m31: f64, m32: f64, m33: f64,
+    pub m00: f64, pub m01: f64, pub m02: f64, pub m03: f64,
+    pub m10: f64, pub m11: f64, pub m12: f64, pub m13: f64,
+    pub m20: f64, pub m21: f64, pub m22: f64, pub m23: f64,
+    pub m30: f64, pub m31: f64, pub m32: f64, pub m33: f64,
 }
 
 impl fmt::Display for DMat4 {
