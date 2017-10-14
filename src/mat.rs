@@ -731,7 +731,17 @@ macro_rules! impl_matrix {
                 v.into()
             }
         }
-        
+
+        impl<'a> ops::Mul<$vec> for &'a $self {
+            type Output = $vec;
+            fn mul(self, rhs: $vec) -> Self::Output {
+                let a: &$minner = self.as_ref().into();
+                let b: &$vinner = rhs.as_ref().into();
+                let v: $varray = (a * b).into();
+                v.into()
+            }
+        }
+
         impl ops::Mul<$self> for $base {
             type Output = $self;
             fn mul(self, rhs: $self) -> Self::Output {
@@ -826,3 +836,35 @@ impl_matrix!(Mat4, cgmath::Matrix4<f32>, [[f32; 4]; 4], Vec4, cgmath::Vector4<f3
 impl_matrix!(DMat2, cgmath::Matrix2<f64>, [[f64; 2]; 2], DVec2, cgmath::Vector2<f64>, [f64; 2], f64);
 impl_matrix!(DMat3, cgmath::Matrix3<f64>, [[f64; 3]; 3], DVec3, cgmath::Vector3<f64>, [f64; 3], f64);
 impl_matrix!(DMat4, cgmath::Matrix4<f64>, [[f64; 4]; 4], DVec4, cgmath::Vector4<f64>, [f64; 4], f64);
+
+#[cfg(feature = "mint")]
+mod mint_support {
+    use mint;
+    use super::*;
+
+    macro_rules! impl_mint_conversion {
+        ($self:ty, $mint:ty, $via:ty) => {
+            impl From<$mint> for $self {
+                fn from(m: $mint) -> Self {
+                    let v: $via = m.into();
+                    v.into()
+                }
+            }
+
+            impl Into<$mint> for $self {
+                fn into(self) -> $mint {
+                    let v: $via = self.into();
+                    v.into()
+                }
+            }
+        };
+    }
+
+    impl_mint_conversion!(Mat2, mint::ColumnMatrix2<f32>, [[f32; 2]; 2]);
+    impl_mint_conversion!(Mat3, mint::ColumnMatrix3<f32>, [[f32; 3]; 3]);
+    impl_mint_conversion!(Mat4, mint::ColumnMatrix4<f32>, [[f32; 4]; 4]);
+
+    impl_mint_conversion!(DMat2, mint::ColumnMatrix2<f64>, [[f64; 2]; 2]);
+    impl_mint_conversion!(DMat3, mint::ColumnMatrix3<f64>, [[f64; 3]; 3]);
+    impl_mint_conversion!(DMat4, mint::ColumnMatrix4<f64>, [[f64; 4]; 4]);
+}

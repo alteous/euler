@@ -162,3 +162,39 @@ macro_rules! impl_quaternion {
 
 impl_quaternion!(DQuat, f64, cgmath::Quaternion<f64>, [f64; 4]);
 impl_quaternion!(Quat, f32, cgmath::Quaternion<f32>, [f32; 4]);
+
+#[cfg(feature = "mint")]
+mod mint_support {
+    use mint;
+    use super::*;
+
+    impl From<mint::Quaternion<f32>> for Quat {
+        fn from(m: mint::Quaternion<f32>) -> Self {
+            Quat::new(m.v.x, m.v.y, m.v.z, m.s)
+        }
+    }
+
+    impl Into<mint::Quaternion<f32>> for Quat {
+        fn into(self) -> mint::Quaternion<f32> {
+            mint::Quaternion {
+                v: mint::Vector3 { x: self.x, y: self.y, z: self.z },
+                s: self.s,
+            }
+        }
+    }
+
+    impl From<mint::Quaternion<f64>> for DQuat {
+        fn from(m: mint::Quaternion<f64>) -> Self {
+            DQuat::new(m.v.x, m.v.y, m.v.z, m.s)
+        }
+    }
+
+    impl Into<mint::Quaternion<f64>> for DQuat {
+        fn into(self) -> mint::Quaternion<f64> {
+            mint::Quaternion {
+                v: mint::Vector3 { x: self.x, y: self.y, z: self.z },
+                s: self.s,
+            }
+        }
+    }
+}

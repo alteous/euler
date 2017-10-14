@@ -90,9 +90,10 @@ impl From<DVec3> for Vec3 {
     }
 }
 
-impl From<(Vec2, f32)> for Vec3 {
-    fn from(arg: (Vec2, f32)) -> Self {
-        Self::new(arg.0.x, arg.0.y, arg.1)
+impl<T: Into<Vec2>> From<(T, f32)> for Vec3 {
+    fn from(arg: (T, f32)) -> Self {
+        let (v, z) = (arg.0.into(), arg.1);
+        Self::new(v.x, v.y, z)
     }
 }
 
@@ -152,15 +153,17 @@ impl From<DVec4> for Vec4 {
     }
 }
 
-impl From<(Vec2, f32, f32)> for Vec4 {
-    fn from(arg: (Vec2, f32, f32)) -> Self {
-        Self::new(arg.0.x, arg.0.y, arg.1, arg.2)
+impl<T: Into<Vec2>> From<(T, f32, f32)> for Vec4 {
+    fn from(arg: (T, f32, f32)) -> Self {
+        let (v, z, w) = (arg.0.into(), arg.1, arg.2);
+        Self::new(v.x, v.y, z, w)
     }
 }
 
-impl From<(Vec3, f32)> for Vec4 {
-    fn from(arg: (Vec3, f32)) -> Self {
-        Self::new(arg.0.x, arg.0.y, arg.0.z, arg.1)
+impl<T: Into<Vec3>> From<(T, f32)> for Vec4 {
+    fn from(arg: (T, f32)) -> Self {
+        let (v, w) = (arg.0.into(), arg.1);
+        Self::new(v.x, v.y, v.z, w)
     }
 }
 
@@ -258,9 +261,10 @@ impl From<Vec3> for DVec3 {
     }
 }
 
-impl From<(DVec2, f64)> for DVec3 {
-    fn from(arg: (DVec2, f64)) -> Self {
-        Self::new(arg.0.x, arg.0.y, arg.1)
+impl<T: Into<DVec2>> From<(T, f64)> for DVec3 {
+    fn from(arg: (T, f64)) -> Self {
+        let (v, z) = (arg.0.into(), arg.1);
+        Self::new(v.x, v.y, z)
     }
 }
 
@@ -320,15 +324,17 @@ impl From<Vec4> for DVec4 {
     }
 }
 
-impl From<(DVec2, f64, f64)> for DVec4 {
-    fn from(arg: (DVec2, f64, f64)) -> Self {
-        Self::new(arg.0.x, arg.0.y, arg.1, arg.2)
+impl<T: Into<DVec2>> From<(T, f64, f64)> for DVec4 {
+    fn from(arg: (T, f64, f64)) -> Self {
+        let (v, z, w) = (arg.0.into(), arg.1, arg.2);
+        Self::new(v.x, v.y, z, w)
     }
 }
 
-impl From<(DVec3, f64)> for DVec4 {
-    fn from(arg: (DVec3, f64)) -> Self {
-        Self::new(arg.0.x, arg.0.y, arg.0.z, arg.1)
+impl<T: Into<DVec3>> From<(T, f64)> for DVec4 {
+    fn from(arg: (T, f64)) -> Self {
+        let (v, w) = (arg.0.into(), arg.1);
+        Self::new(v.x, v.y, v.z, w)
     }
 }
 
@@ -416,6 +422,15 @@ macro_rules! impl_vector {
             }
         }
 
+        impl ops::Mul<$self> for $base {
+            type Output = $self;
+            fn mul(self, arg: $self) -> Self::Output {
+                let a: &$inner = arg.as_ref().into();
+                let v: $array = (self * a).into();
+                v.into()
+            }
+        }
+
         impl ops::Mul<$base> for $self {
             type Output = $self;
             fn mul(self, arg: $base) -> Self::Output {
@@ -496,3 +511,41 @@ impl_vector!(Vec4, f32, cgmath::Vector4<f32>, [f32; 4]);
 impl_vector!(DVec2, f64, cgmath::Vector2<f64>, [f64; 2]);
 impl_vector!(DVec3, f64, cgmath::Vector3<f64>, [f64; 3]);
 impl_vector!(DVec4, f64, cgmath::Vector4<f64>, [f64; 4]);
+
+#[cfg(feature = "mint")]
+mod mint_support {
+    use mint;
+    use super::*;
+
+    macro_rules! impl_mint_conversion {
+        ($self:ty, $mint:ty, $via:ty) => {
+            impl From<$mint> for $self {
+                fn from(m: $mint) -> Self {
+                    let v: $via = m.into();
+                    v.into()
+                }
+            }
+
+            impl Into<$mint> for $self {
+                fn into(self) -> $mint {
+                    let v: $via = self.into();
+                    v.into()
+                }
+            }
+        };
+    }
+
+    impl_mint_conversion!(Vec2, mint::Point2<f32>, [f32; 2]);
+    impl_mint_conversion!(Vec3, mint::Point3<f32>, [f32; 3]);
+
+    impl_mint_conversion!(Vec2, mint::Vector2<f32>, [f32; 2]);
+    impl_mint_conversion!(Vec3, mint::Vector3<f32>, [f32; 3]);
+    impl_mint_conversion!(Vec4, mint::Vector4<f32>, [f32; 4]);
+
+    impl_mint_conversion!(DVec2, mint::Point2<f64>, [f64; 2]);
+    impl_mint_conversion!(DVec3, mint::Point3<f64>, [f64; 3]);
+
+    impl_mint_conversion!(DVec2, mint::Vector2<f64>, [f64; 2]);
+    impl_mint_conversion!(DVec3, mint::Vector3<f64>, [f64; 3]);
+    impl_mint_conversion!(DVec4, mint::Vector4<f64>, [f64; 4]);
+}

@@ -4,6 +4,7 @@
 #[macro_use]
 extern crate approx;
 extern crate cgmath;
+#[cfg(feature = "mint")]
 extern crate mint;
 
 #[macro_use]
