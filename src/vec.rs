@@ -364,6 +364,21 @@ impl Vec3 {
     }
 }
 
+macro_rules! impl_angle {
+    ($self:ty, $base:ty) => {
+        impl $self {
+            /// Returns the acute angle between two vectors.
+            ///
+            /// # Panics
+            ///
+            /// Panics if `self` is the zero vector.
+            pub fn angle(self, rhs: $self) -> $base {
+                (self.dot(rhs) / self.length()).acos()
+            }
+        }
+    };
+}
+
 macro_rules! impl_vector {
     ($self:ty, $base:ty, $inner:ty, $array:ty) => {
         impl $self {
@@ -544,6 +559,12 @@ impl_vector!(Vec4, f32, cgmath::Vector4<f32>, [f32; 4]);
 impl_vector!(DVec2, f64, cgmath::Vector2<f64>, [f64; 2]);
 impl_vector!(DVec3, f64, cgmath::Vector3<f64>, [f64; 3]);
 impl_vector!(DVec4, f64, cgmath::Vector4<f64>, [f64; 4]);
+
+impl_angle!(Vec2, f32);
+impl_angle!(Vec3, f32);
+
+impl_angle!(DVec2, f64);
+impl_angle!(DVec3, f64);
 
 #[cfg(feature = "mint")]
 mod mint_support {
