@@ -458,6 +458,15 @@ macro_rules! impl_vector {
             }
         }
 
+        impl ops::Div<$base> for $self {
+            type Output = $self;
+            fn div(self, arg: $base) -> Self::Output {
+                let a: &$inner = self.as_ref().into();
+                let v: $array = (a / arg).into();
+                v.into()
+            }
+        }
+
         impl AsRef<$array> for $self {
             fn as_ref(&self) -> &$array {
                 unsafe {
