@@ -667,7 +667,7 @@ macro_rules! impl_matrix {
             /// ## Panics
             ///
             /// Panics if the matrix has no inverse (i.e. has zero determinant).
-            pub fn invert(self) -> $self {
+            pub fn inverse(self) -> $self {
                 self.try_invert().unwrap()
             }
 

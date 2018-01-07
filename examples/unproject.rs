@@ -5,7 +5,7 @@ use std::{f32, f64};
 
 fn unproject_single_precision(ndc: euler::Vec2) -> euler::Vec3 {
     let projection = mat4!();
-    let inverse_projection = projection.invert();
+    let inverse_projection = projection.inverse();
     let eye = inverse_projection * vec4!(ndc, -1.0, 1.0);
     let view = euler::Trs::new(
         vec3!(1, 0, -1),
@@ -20,7 +20,7 @@ fn unproject_single_precision(ndc: euler::Vec2) -> euler::Vec3 {
 
 fn unproject_double_precision(ndc: euler::Vec2) -> euler::DVec3 {
     let projection = dmat4!();
-    let inverse_projection = projection.invert();
+    let inverse_projection = projection.inverse();
     let eye = inverse_projection * dvec4!(dvec2!(ndc), -1, 1);
     let view = euler::DTrs::new(
         dvec3!(1, 0, -1),
