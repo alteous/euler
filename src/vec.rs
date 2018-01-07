@@ -452,6 +452,12 @@ macro_rules! impl_vector {
             }
         }
 
+        impl ops::MulAssign<$base> for $self {
+            fn mul_assign(&mut self, rhs: $base) {
+                *self = *self * rhs;
+            }
+        }
+
         impl AsRef<$array> for $self {
             fn as_ref(&self) -> &$array {
                 unsafe {
