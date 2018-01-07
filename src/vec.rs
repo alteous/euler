@@ -2,6 +2,8 @@ use approx::ApproxEq;
 use cgmath;
 use std::{fmt, mem, ops};
 
+use {DQuat, Quat};
+
 /// Single-precision 2D vector.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 #[repr(C)]
@@ -352,6 +354,15 @@ impl DVec3 {
         let v: [f64; 3] = a.cross(*b).into();
         v.into()
     }
+
+    /// Rotates a vector by a quaternion.
+    pub fn rotate(self, rhs: DQuat) -> Self {
+        use cgmath::Rotation;
+        let rotation = cgmath::Quaternion::new(rhs.s, rhs.x, rhs.y, rhs.z);
+        let point = cgmath::Point3::new(self.x, self.y, self.z);
+        let result = rotation.rotate_point(point);
+        dvec3!(result.x, result.y, result.z)
+    }
 }
 
 impl Vec3 {
@@ -361,6 +372,15 @@ impl Vec3 {
         let b: &cgmath::Vector3<f32> = rhs.as_ref().into();
         let v: [f32; 3] = a.cross(*b).into();
         v.into()
+    }
+
+    /// Rotates a vector by a quaternion.
+    pub fn rotate(self, rhs: Quat) -> Self {
+        use cgmath::Rotation;
+        let rotation = cgmath::Quaternion::new(rhs.s, rhs.x, rhs.y, rhs.z);
+        let point = cgmath::Point3::new(self.x, self.y, self.z);
+        let result = rotation.rotate_point(point);
+        vec3!(result.x, result.y, result.z)
     }
 }
 
