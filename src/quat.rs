@@ -118,6 +118,12 @@ macro_rules! impl_quaternion {
             }
         }
 
+        impl ops::MulAssign<$self> for $self {
+            fn mul_assign(&mut self, rhs: $self) {
+                *self = *self * rhs;
+            }
+        }
+
         impl Default for $self {
             fn default() -> Self {
                 Self::identity()
