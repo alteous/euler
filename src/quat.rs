@@ -32,6 +32,18 @@ impl Quat {
         Quat::new(0.0, 0.0, 0.0, 1.0)
     }
 
+    /// Constructor for a rotation defined by a set of Euler angles
+    ///
+    /// The rotation order is Z, then X, then Y. From the point of the
+    /// object, this is equivalent to a yaw in `angles.y`, a pitch in
+    /// `angles.x`, and a roll in `angles.z`.
+    pub fn euler(angles: Vec3) -> Self {
+        let roll = quat!(0.0, 0.0, 1.0; angles.z);
+        let pitch = quat!(1.0, 0.0, 0.0; angles.x);
+        let yaw = quat!(0.0, 1.0, 0.0; angles.y);
+        roll * pitch * yaw
+    }
+
     /// Constructor for a rotation around `axis` by `angle` radians.
     ///
     /// `axis` need not be normalized.
@@ -69,6 +81,18 @@ impl DQuat {
     /// Identity constructor.
     pub fn identity() -> Self {
         DQuat::new(0.0, 0.0, 0.0, 1.0)
+    }
+
+    /// Constructor for a rotation defined by a set of Euler angles
+    ///
+    /// The rotation order is Z, then X, then Y. From the point of the
+    /// object, this is equivalent to a yaw in `angles.y`, a pitch in
+    /// `angles.x`, and a roll in `angles.z`.
+    pub fn euler(angles: DVec3) -> Self {
+        let roll = dquat!(0.0, 0.0, 1.0; angles.z);
+        let pitch = dquat!(1.0, 0.0, 0.0; angles.x);
+        let yaw = dquat!(0.0, 1.0, 0.0; angles.y);
+        roll * pitch * yaw
     }
 
     /// Constructor for a rotation around `axis` by `angle` radians.
