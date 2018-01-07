@@ -10,9 +10,10 @@ The `euler` crate adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0
 
 ## Added
 
-- Implementation of add/sub/mul/div assignment operators for vectors.
+- Implementation of `{Add, Sub, Mul, Div}Assign` for vectors.
+- Implementation of `MulAssign` for quaternions.
 - `Vec{2, 3}::angle`.
-- `Vec3::rotate`.
+- `Vec3::rotate_by`.
 - `Quat::euler`.
 
 ## Changed

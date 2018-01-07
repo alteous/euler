@@ -54,6 +54,16 @@ impl Quat {
         );
         Quat::new(q.v.x, q.v.y, q.v.z, q.s)
     }
+
+    /// Return the application of the rotation represented by this quaternion
+    /// to the vector argument.
+    pub fn rotate(&self, vector: Vec3) -> Vec3 {
+        use cgmath::Rotation;
+        let rotation = cgmath::Quaternion::new(self.s, self.x, self.y, self.z);
+        let point = cgmath::Point3::new(vector.x, vector.y, vector.z);
+        let result = rotation.rotate_point(point);
+        vec3!(result.x, result.y, result.z)
+    }
 }
 
 /// Double-precision quaternion.
@@ -105,7 +115,18 @@ impl DQuat {
         );
         DQuat::new(q.v.x, q.v.y, q.v.z, q.s)
     }
+
+    /// Return the application of the rotation represented by this quaternion
+    /// to the vector argument.
+    pub fn rotate(&self, vector: DVec3) -> DVec3 {
+        use cgmath::Rotation;
+        let rotation = cgmath::Quaternion::new(self.s, self.x, self.y, self.z);
+        let point = cgmath::Point3::new(vector.x, vector.y, vector.z);
+        let result = rotation.rotate_point(point);
+        dvec3!(result.x, result.y, result.z)
+    }
 }
+
 macro_rules! impl_quaternion {
     ($self:ty, $base:ty, $inner:ty, $array:ty) => {
         impl ops::Mul<$self> for $self {
