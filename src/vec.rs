@@ -428,6 +428,12 @@ macro_rules! impl_vector {
             }
         }
 
+        impl ops::SubAssign<$self> for $self {
+            fn sub_assign(&mut self, rhs: $self) {
+                *self = *self - rhs;
+            }
+        }
+
         impl ops::Mul<$self> for $base {
             type Output = $self;
             fn mul(self, arg: $self) -> Self::Output {
