@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 The `euler` crate adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2018-01-07
+
+## Added
+
+- Implementation of add/sub/mul/div assignment operators for vectors.
+- `Vec{2, 3}::angle`.
+- `Vec3::rotate`.
+- `Quat::euler`.
+
+## Changed
+
+- Renamed `Mat::invert` as `Mat::inverse`.
+
+## [0.2.1] - 2017-10-14
+
+### Fixed
+
+- Vector macro constructor ordering.
+
+## [0.2.0] - 2017-10-14
+
+### Added
+
+- Double precision types `DVec*`, `DMat*`, and `DQuat*`.
+
 ## [0.1.0] - 2017-09-09
 
 ### Added
