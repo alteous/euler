@@ -1,4 +1,21 @@
-# euler
+<h1 align="center">
+   euler
+</h1>
+<p align="center">
+   <a href="https://travis-ci.org/alteous/euler">
+      <img src="https://travis-ci.org/alteous/euler.svg?branch=master" alt="travis">
+   </a>
+   <a href="https://crates.io/crates/euler">
+      <img src="https://img.shields.io/crates/v/euler.svg" alt="crates.io">
+   </a>
+   <a href="https://docs.rs/euler">
+      <img src="https://docs.rs/euler/badge.svg" alt="docs.rs">
+   </a>
+   <a href="https://gitter.im/euler-rs/Lobby">
+      <img src="https://badges.gitter.im/euler-rs/Lobby.svg" alt="gitter">
+   </a>
+</p>
+<hr>
 
 A mathematics library for 3D computer graphics.
 
@@ -17,11 +34,11 @@ A mathematics library for 3D computer graphics.
 
 ```rust
 let projection = mat4!();
-let inverse_projection = projection.invert();
+let inverse_projection = projection.inverse();
 let ndc = vec2!(-0.5, 0.5);
 let eye = inverse_projection * vec4!(ndc, -1, 1);
-let view = euler::Trs::new(vec3!(1, 0, -1), quat!(1, 0, 0; std::f32::consts::PI / 2.0), vec3!(1.0)).matrix();
-let inverse_view = view.invert();
+let view = euler::Trs::new(vec3!(1, 0, -1), quat!(1, 0, 0; PI / 2.0), vec3!(1.0)).matrix();
+let inverse_view = view.inverse();
 let world = inverse_view * vec4!(eye.xy(), -1, 0);
 let ray = world.xyz().normalize();
 ```
@@ -58,7 +75,7 @@ That's correct. This is a side-effect of using macros in their current state, ho
 
 ### Does using macros increase compile times?
 
-Maybe, but I personally haven't noticed. Since the library performs only shallow macro expansions (usually a single function call) and there are very few generic code, compile times are often fast.
+Maybe, but I personally haven't noticed. Since the library performs only shallow macro expansions (usually a single function call) and there is very little generic code, compile times are assumed to be 'fast enough'.
 
 ### Without a point type, how you do distinguish between position and direction vector transforms?
 
