@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 The `euler` crate adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2018-06-22
+
+- `cgmath` updated to version 0.16.x.
+- `mint` updated to version 0.5.x.
+
 ## [0.3.0] - 2018-01-07
 
 ## Added
