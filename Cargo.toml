@@ -12,8 +12,8 @@ license = "MIT/Apache-2.0"
 
 [dependencies]
 approx = "0.1.1"
-cgmath = "0.15.0"
-mint = { optional = true, version = "0.4.1" }
+cgmath = "0.16"
+mint = { optional = true, version = "0.5" }
 
 [features]
 default = ["cgmath/mint"]
