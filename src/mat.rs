@@ -479,6 +479,34 @@ impl Mat4 {
             0., 0., lo, di,
         )
     }
+
+    /// Orthographic projection matrix constructor.
+    pub fn orthographic_projection(
+        left: f32, right: f32, bottom: f32, top: f32, near: f32, far: f32
+    ) -> Self {
+        let ortho = cgmath::ortho(left, right, bottom, top, near, far);
+
+        Mat4::new(
+            ortho.x.x, ortho.x.y, ortho.x.z, ortho.x.w,
+            ortho.y.x, ortho.y.y, ortho.y.z, ortho.y.w,
+            ortho.z.x, ortho.z.y, ortho.z.z, ortho.z.w,
+            ortho.w.x, ortho.w.y, ortho.w.z, ortho.w.w,
+        )
+    }
+
+    /// Finite perspective projection matrix constructor.
+    pub fn finite_perspective_projection(
+        fovy: f32, aspect: f32, near: f32, far: f32
+    ) -> Self {
+        let pp = cgmath::perspective(cgmath::Rad(fovy), aspect, near, far);
+
+        Mat4::new(
+            pp.x.x, pp.x.y, pp.x.z, pp.x.w,
+            pp.y.x, pp.y.y, pp.y.z, pp.y.w,
+            pp.z.x, pp.z.y, pp.z.z, pp.z.w,
+            pp.w.x, pp.w.y, pp.w.z, pp.w.w,
+        )
+    }
 }
 
 impl From<f32> for Mat4 {
@@ -589,6 +617,34 @@ impl DMat4 {
             lo, di, up, 0.,
             0., lo, di, up,
             0., 0., lo, di,
+        )
+    }
+
+    /// Orthographic projection matrix constructor.
+    pub fn orthographic_projection(
+        left: f64, right: f64, bottom: f64, top: f64, near: f64, far: f64
+    ) -> Self {
+        let ortho = cgmath::ortho(left, right, bottom, top, near, far);
+
+        DMat4::new(
+            ortho.x.x, ortho.x.y, ortho.x.z, ortho.x.w,
+            ortho.y.x, ortho.y.y, ortho.y.z, ortho.y.w,
+            ortho.z.x, ortho.z.y, ortho.z.z, ortho.z.w,
+            ortho.w.x, ortho.w.y, ortho.w.z, ortho.w.w,
+        )
+    }
+
+    /// Finite perspective projection matrix constructor.
+    pub fn finite_perspective_projection(
+        fovy: f64, aspect: f64, near: f64, far: f64
+    ) -> Self {
+        let pp = cgmath::perspective(cgmath::Rad(fovy), aspect, near, far);
+
+        DMat4::new(
+            pp.x.x, pp.x.y, pp.x.z, pp.x.w,
+            pp.y.x, pp.y.y, pp.y.z, pp.y.w,
+            pp.z.x, pp.z.y, pp.z.z, pp.z.w,
+            pp.w.x, pp.w.y, pp.w.z, pp.w.w,
         )
     }
 }
