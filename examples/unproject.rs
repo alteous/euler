@@ -11,7 +11,8 @@ fn unproject_single_precision(ndc: euler::Vec2) -> euler::Vec3 {
         vec3!(1, 0, -1),
         quat!(1, 0, 0; f32::consts::PI / 2.0),
         vec3!(1.0),
-    ).matrix();
+    )
+    .matrix();
     let inverse_view = view.inverse();
     let world = inverse_view * vec4!(eye.xy(), -1.0, 0.0);
     let ray = world.xyz().normalize();
@@ -26,7 +27,8 @@ fn unproject_double_precision(ndc: euler::Vec2) -> euler::DVec3 {
         dvec3!(1, 0, -1),
         dquat!(1, 0, 0; f64::consts::PI / 2.0),
         dvec3!(1.0),
-    ).matrix();
+    )
+    .matrix();
     let inverse_view = view.inverse();
     let world = inverse_view * dvec4!(eye.xy(), -1, 0);
     let ray = world.xyz().normalize();

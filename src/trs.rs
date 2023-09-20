@@ -1,8 +1,8 @@
 use cgmath;
 use std::fmt;
 
+use crate::{DMat4, DQuat, DVec3, Mat4, Quat, Vec3};
 use approx::ApproxEq;
-use {DQuat, DMat4, DVec3, Quat, Mat4, Vec3};
 
 /// Single-precision translation + rotation + non-uniform scale transform.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -46,8 +46,11 @@ impl Trs {
 
     /// Returns the equivalent matrix representation for this transform.
     pub fn matrix(&self) -> Mat4 {
-        let t = cgmath::Matrix4::from_translation(cgmath::Vector3::new(self.t.x, self.t.y, self.t.z));
-        let r = cgmath::Matrix4::from(cgmath::Quaternion::new(self.r.s, self.r.x,  self.r.y, self.r.z));
+        let t =
+            cgmath::Matrix4::from_translation(cgmath::Vector3::new(self.t.x, self.t.y, self.t.z));
+        let r = cgmath::Matrix4::from(cgmath::Quaternion::new(
+            self.r.s, self.r.x, self.r.y, self.r.z,
+        ));
         let s = cgmath::Matrix4::from_nonuniform_scale(self.s.x, self.s.y, self.s.z);
         let m: [[f32; 4]; 4] = (t * r * s).into();
         Mat4::from(m)
@@ -76,23 +79,14 @@ impl ApproxEq for Trs {
         max_relative: Self::Epsilon,
     ) -> bool {
         self.t.relative_eq(&other.t, epsilon, max_relative)
-            &&    
-        self.r.relative_eq(&other.r, epsilon, max_relative)
-            &&
-        self.s.relative_eq(&other.s, epsilon, max_relative)
+            && self.r.relative_eq(&other.r, epsilon, max_relative)
+            && self.s.relative_eq(&other.s, epsilon, max_relative)
     }
 
-    fn ulps_eq(
-        &self,
-        other: &Self,
-        epsilon: Self::Epsilon,
-        max_ulps: u32,
-    ) -> bool {
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
         self.t.ulps_eq(&other.t, epsilon, max_ulps)
-            &&
-        self.r.ulps_eq(&other.r, epsilon, max_ulps)
-            &&
-        self.s.ulps_eq(&other.s, epsilon, max_ulps)
+            && self.r.ulps_eq(&other.r, epsilon, max_ulps)
+            && self.s.ulps_eq(&other.s, epsilon, max_ulps)
     }
 }
 
@@ -138,8 +132,11 @@ impl DTrs {
 
     /// Returns the equivalent matrix representation for this transform.
     pub fn matrix(&self) -> DMat4 {
-        let t = cgmath::Matrix4::from_translation(cgmath::Vector3::new(self.t.x, self.t.y, self.t.z));
-        let r = cgmath::Matrix4::from(cgmath::Quaternion::new(self.r.s, self.r.x,  self.r.y, self.r.z));
+        let t =
+            cgmath::Matrix4::from_translation(cgmath::Vector3::new(self.t.x, self.t.y, self.t.z));
+        let r = cgmath::Matrix4::from(cgmath::Quaternion::new(
+            self.r.s, self.r.x, self.r.y, self.r.z,
+        ));
         let s = cgmath::Matrix4::from_nonuniform_scale(self.s.x, self.s.y, self.s.z);
         let m: [[f64; 4]; 4] = (t * r * s).into();
         DMat4::from(m)
@@ -168,22 +165,13 @@ impl ApproxEq for DTrs {
         max_relative: Self::Epsilon,
     ) -> bool {
         self.t.relative_eq(&other.t, epsilon, max_relative)
-            &&    
-        self.r.relative_eq(&other.r, epsilon, max_relative)
-            &&
-        self.s.relative_eq(&other.s, epsilon, max_relative)
+            && self.r.relative_eq(&other.r, epsilon, max_relative)
+            && self.s.relative_eq(&other.s, epsilon, max_relative)
     }
 
-    fn ulps_eq(
-        &self,
-        other: &Self,
-        epsilon: Self::Epsilon,
-        max_ulps: u32,
-    ) -> bool {
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
         self.t.ulps_eq(&other.t, epsilon, max_ulps)
-            &&
-        self.r.ulps_eq(&other.r, epsilon, max_ulps)
-            &&
-        self.s.ulps_eq(&other.s, epsilon, max_ulps)
+            && self.r.ulps_eq(&other.r, epsilon, max_ulps)
+            && self.s.ulps_eq(&other.s, epsilon, max_ulps)
     }
 }

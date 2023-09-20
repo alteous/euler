@@ -45,15 +45,12 @@ macro_rules! mat2 {
     ($expr:expr) => {
         $crate::Mat2::from($expr)
     };
-    
+
     (
         $m00:expr, $m01:expr,
         $m10:expr, $m11:expr,
     ) => {
-        $crate::Mat2::new(
-            $m00 as f32, $m01 as f32,
-            $m10 as f32, $m11 as f32,
-        )
+        $crate::Mat2::new($m00 as f32, $m01 as f32, $m10 as f32, $m11 as f32)
     };
 }
 
@@ -109,10 +106,7 @@ macro_rules! dmat2 {
         $m00:expr, $m01:expr,
         $m10:expr, $m11:expr,
     ) => {
-        $crate::DMat2::new(
-            $m00 as f64, $m01 as f64,
-            $m10 as f64, $m11 as f64,
-        )
+        $crate::DMat2::new($m00 as f64, $m01 as f64, $m10 as f64, $m11 as f64)
     };
 }
 
@@ -173,9 +167,15 @@ macro_rules! mat3 {
         $m20:expr, $m21:expr, $m22:expr,
     ) => {
         $crate::Mat3::new(
-            $m00 as f32, $m01 as f32, $m02 as f32,
-            $m10 as f32, $m11 as f32, $m12 as f32,
-            $m20 as f32, $m21 as f32, $m22 as f32,
+            $m00 as f32,
+            $m01 as f32,
+            $m02 as f32,
+            $m10 as f32,
+            $m11 as f32,
+            $m12 as f32,
+            $m20 as f32,
+            $m21 as f32,
+            $m22 as f32,
         )
     };
 }
@@ -237,9 +237,15 @@ macro_rules! dmat3 {
         $m20:expr, $m21:expr, $m22:expr,
     ) => {
         $crate::DMat3::new(
-            $m00 as f64, $m01 as f64, $m02 as f64,
-            $m10 as f64, $m11 as f64, $m12 as f64,
-            $m20 as f64, $m21 as f64, $m22 as f64,
+            $m00 as f64,
+            $m01 as f64,
+            $m02 as f64,
+            $m10 as f64,
+            $m11 as f64,
+            $m12 as f64,
+            $m20 as f64,
+            $m21 as f64,
+            $m22 as f64,
         )
     };
 }
@@ -305,10 +311,22 @@ macro_rules! mat4 {
         $m30:expr, $m31:expr, $m32:expr, $m33:expr,
     ) => {
         $crate::Mat4::new(
-            $m00 as f32, $m01 as f32, $m02 as f32, $m03 as f32,
-            $m10 as f32, $m11 as f32, $m12 as f32, $m13 as f32,
-            $m20 as f32, $m21 as f32, $m22 as f32, $m23 as f32,
-            $m30 as f32, $m31 as f32, $m32 as f32, $m33 as f32,
+            $m00 as f32,
+            $m01 as f32,
+            $m02 as f32,
+            $m03 as f32,
+            $m10 as f32,
+            $m11 as f32,
+            $m12 as f32,
+            $m13 as f32,
+            $m20 as f32,
+            $m21 as f32,
+            $m22 as f32,
+            $m23 as f32,
+            $m30 as f32,
+            $m31 as f32,
+            $m32 as f32,
+            $m33 as f32,
         )
     };
 }
@@ -374,10 +392,22 @@ macro_rules! dmat4 {
         $m30:expr, $m31:expr, $m32:expr, $m33:expr,
     ) => {
         $crate::DMat4::new(
-            $m00 as f64, $m01 as f64, $m02 as f64, $m03 as f64,
-            $m10 as f64, $m11 as f64, $m12 as f64, $m13 as f64,
-            $m20 as f64, $m21 as f64, $m22 as f64, $m23 as f64,
-            $m30 as f64, $m31 as f64, $m32 as f64, $m33 as f64,
+            $m00 as f64,
+            $m01 as f64,
+            $m02 as f64,
+            $m03 as f64,
+            $m10 as f64,
+            $m11 as f64,
+            $m12 as f64,
+            $m13 as f64,
+            $m20 as f64,
+            $m21 as f64,
+            $m22 as f64,
+            $m23 as f64,
+            $m30 as f64,
+            $m31 as f64,
+            $m32 as f64,
+            $m33 as f64,
         )
     };
 }
