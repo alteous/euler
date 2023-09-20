@@ -1,9 +1,9 @@
 use cgmath;
 use std::{fmt, mem, ops};
 
+use crate::{DVec3, Vec3};
 use approx::ApproxEq;
 use cgmath::{InnerSpace, Rotation3};
-use {DVec3, Vec3};
 
 /// Single-precision quaternion.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -150,12 +150,10 @@ macro_rules! impl_quaternion {
                 Self::identity()
             }
         }
-        
+
         impl AsRef<$array> for $self {
             fn as_ref(&self) -> &$array {
-                unsafe {
-                    mem::transmute(self)
-                }
+                unsafe { mem::transmute(self) }
             }
         }
 
@@ -197,12 +195,7 @@ macro_rules! impl_quaternion {
                 a.relative_eq(&b, epsilon, max_relative)
             }
 
-            fn ulps_eq(
-                &self,
-                other: &Self,
-                epsilon: Self::Epsilon,
-                max_ulps: u32,
-            ) -> bool {
+            fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
                 let a: &$inner = self.as_ref().into();
                 let b: &$inner = other.as_ref().into();
                 a.ulps_eq(b, epsilon, max_ulps)
@@ -216,8 +209,8 @@ impl_quaternion!(Quat, f32, cgmath::Quaternion<f32>, [f32; 4]);
 
 #[cfg(feature = "mint")]
 mod mint_support {
-    use mint;
     use super::*;
+    use mint;
 
     impl From<mint::Quaternion<f32>> for Quat {
         fn from(m: mint::Quaternion<f32>) -> Self {
@@ -228,7 +221,11 @@ mod mint_support {
     impl Into<mint::Quaternion<f32>> for Quat {
         fn into(self) -> mint::Quaternion<f32> {
             mint::Quaternion {
-                v: mint::Vector3 { x: self.x, y: self.y, z: self.z },
+                v: mint::Vector3 {
+                    x: self.x,
+                    y: self.y,
+                    z: self.z,
+                },
                 s: self.s,
             }
         }
@@ -243,7 +240,11 @@ mod mint_support {
     impl Into<mint::Quaternion<f64>> for DQuat {
         fn into(self) -> mint::Quaternion<f64> {
             mint::Quaternion {
-                v: mint::Vector3 { x: self.x, y: self.y, z: self.z },
+                v: mint::Vector3 {
+                    x: self.x,
+                    y: self.y,
+                    z: self.z,
+                },
                 s: self.s,
             }
         }

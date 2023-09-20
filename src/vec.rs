@@ -433,6 +433,24 @@ macro_rules! impl_vector {
             }
         }
 
+        impl<'a> std::iter::Sum<&'a Self> for $self {
+            fn sum<I>(iter: I) -> Self
+            where
+                I: Iterator<Item = &'a Self>,
+            {
+                iter.fold(Default::default(), |sum, x| sum + *x)
+            }
+        }
+
+        impl std::iter::Sum<Self> for $self {
+            fn sum<I>(iter: I) -> Self
+            where
+                I: Iterator<Item = Self>,
+            {
+                iter.fold(Default::default(), |sum, x| sum + x)
+            }
+        }
+
         impl ops::Sub<$self> for $self {
             type Output = $self;
             fn sub(self, rhs: $self) -> Self::Output {
@@ -490,25 +508,19 @@ macro_rules! impl_vector {
 
         impl AsRef<$array> for $self {
             fn as_ref(&self) -> &$array {
-                unsafe {
-                    mem::transmute(self)
-                }
+                unsafe { mem::transmute(self) }
             }
         }
 
         impl From<$array> for $self {
             fn from(array: $array) -> Self {
-                unsafe {
-                    mem::transmute(array)
-                }
+                unsafe { mem::transmute(array) }
             }
         }
 
         impl Into<$array> for $self {
             fn into(self) -> $array {
-                unsafe {
-                    mem::transmute(self)
-                }
+                unsafe { mem::transmute(self) }
             }
         }
 
@@ -538,12 +550,7 @@ macro_rules! impl_vector {
                 a.relative_eq(&b, epsilon, max_relative)
             }
 
-            fn ulps_eq(
-                &self,
-                other: &Self,
-                epsilon: Self::Epsilon,
-                max_ulps: u32,
-            ) -> bool {
+            fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
                 let a: &$inner = self.as_ref().into();
                 let b: &$inner = other.as_ref().into();
                 a.ulps_eq(b, epsilon, max_ulps)
@@ -566,10 +573,25 @@ impl_angle!(Vec3, f32);
 impl_angle!(DVec2, f64);
 impl_angle!(DVec3, f64);
 
+#[cfg(test)]
+mod tests {
+    #[test]
+    pub fn vec4_sum() {
+        use crate::vec4;
+        let vs = [
+            vec4!(1.0, 2.0, 3.0),
+            vec4!(0.0, 0.0, 0.0),
+            vec4!(-3.0, -2.0, -1.0),
+        ];
+        let sum = vs.iter().sum();
+        approx::assert_relative_eq!(sum, vec4!(-2.0, 0.0, 2.0));
+    }
+}
+
 #[cfg(feature = "mint")]
 mod mint_support {
-    use mint;
     use super::*;
+    use mint;
 
     macro_rules! impl_mint_conversion {
         ($self:ty, $mint:ty, $via:ty) => {
