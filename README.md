@@ -2,17 +2,11 @@
    euler
 </h1>
 <p align="center">
-   <a href="https://travis-ci.org/alteous/euler">
-      <img src="https://travis-ci.org/alteous/euler.svg?branch=master" alt="travis">
-   </a>
    <a href="https://crates.io/crates/euler">
       <img src="https://img.shields.io/crates/v/euler.svg" alt="crates.io">
    </a>
    <a href="https://docs.rs/euler">
       <img src="https://docs.rs/euler/badge.svg" alt="docs.rs">
-   </a>
-   <a href="https://gitter.im/euler-rs/Lobby">
-      <img src="https://badges.gitter.im/euler-rs/Lobby.svg" alt="gitter">
    </a>
 </p>
 <hr>
