@@ -1,4 +1,4 @@
-use approx::ApproxEq;
+use approx::{AbsDiffEq, RelativeEq, UlpsEq};
 use cgmath;
 use std::{fmt, mem, ops};
 
@@ -524,19 +524,23 @@ macro_rules! impl_vector {
             }
         }
 
-        impl ApproxEq for $self {
-            type Epsilon = <$inner as ApproxEq>::Epsilon;
+        impl AbsDiffEq for $self {
+            type Epsilon = <$inner as AbsDiffEq>::Epsilon;
 
             fn default_epsilon() -> Self::Epsilon {
-                <$inner as ApproxEq>::default_epsilon()
+                <$inner as AbsDiffEq>::default_epsilon()
             }
 
+            fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+                let a: &$inner = self.as_ref().into();
+                let b: &$inner = other.as_ref().into();
+                a.abs_diff_eq(b, epsilon)
+            }
+        }
+
+        impl RelativeEq for $self {
             fn default_max_relative() -> Self::Epsilon {
-                <$inner as ApproxEq>::default_max_relative()
-            }
-
-            fn default_max_ulps() -> u32 {
-                <$inner as ApproxEq>::default_max_ulps()
+                <$inner as RelativeEq>::default_max_relative()
             }
 
             fn relative_eq(
@@ -547,7 +551,13 @@ macro_rules! impl_vector {
             ) -> bool {
                 let a: &$inner = self.as_ref().into();
                 let b: &$inner = other.as_ref().into();
-                a.relative_eq(&b, epsilon, max_relative)
+                a.relative_eq(b, epsilon, max_relative)
+            }
+        }
+
+        impl UlpsEq for $self {
+            fn default_max_ulps() -> u32 {
+                <$inner as UlpsEq>::default_max_ulps()
             }
 
             fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
@@ -577,13 +587,12 @@ impl_angle!(DVec3, f64);
 mod tests {
     #[test]
     pub fn vec4_sum() {
-        use crate::vec4;
         let vs = [
             vec4!(1.0, 2.0, 3.0),
             vec4!(0.0, 0.0, 0.0),
             vec4!(-3.0, -2.0, -1.0),
         ];
-        let sum = vs.iter().sum();
+        let sum: super::Vec4 = vs.iter().sum();
         approx::assert_relative_eq!(sum, vec4!(-2.0, 0.0, 2.0));
     }
 }

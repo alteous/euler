@@ -2,7 +2,7 @@ use cgmath;
 use std::fmt;
 
 use crate::{DMat4, DQuat, DVec3, Mat4, Quat, Vec3};
-use approx::ApproxEq;
+use approx::{AbsDiffEq, RelativeEq, UlpsEq};
 
 /// Single-precision translation + rotation + non-uniform scale transform.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -57,19 +57,23 @@ impl Trs {
     }
 }
 
-impl ApproxEq for Trs {
-    type Epsilon = <f32 as ApproxEq>::Epsilon;
+impl AbsDiffEq for Trs {
+    type Epsilon = <f32 as AbsDiffEq>::Epsilon;
 
     fn default_epsilon() -> Self::Epsilon {
-        <f32 as ApproxEq>::default_epsilon()
+        <f32 as AbsDiffEq>::default_epsilon()
     }
 
+    fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.t.abs_diff_eq(&other.t, epsilon)
+            && self.r.abs_diff_eq(&other.r, epsilon)
+            && self.s.abs_diff_eq(&other.s, epsilon)
+    }
+}
+
+impl RelativeEq for Trs {
     fn default_max_relative() -> Self::Epsilon {
-        <f32 as ApproxEq>::default_max_relative()
-    }
-
-    fn default_max_ulps() -> u32 {
-        <f32 as ApproxEq>::default_max_ulps()
+        <f32 as RelativeEq>::default_max_relative()
     }
 
     fn relative_eq(
@@ -81,6 +85,12 @@ impl ApproxEq for Trs {
         self.t.relative_eq(&other.t, epsilon, max_relative)
             && self.r.relative_eq(&other.r, epsilon, max_relative)
             && self.s.relative_eq(&other.s, epsilon, max_relative)
+    }
+}
+
+impl UlpsEq for Trs {
+    fn default_max_ulps() -> u32 {
+        <f32 as UlpsEq>::default_max_ulps()
     }
 
     fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
@@ -143,19 +153,23 @@ impl DTrs {
     }
 }
 
-impl ApproxEq for DTrs {
-    type Epsilon = <f64 as ApproxEq>::Epsilon;
+impl AbsDiffEq for DTrs {
+    type Epsilon = <f64 as AbsDiffEq>::Epsilon;
 
     fn default_epsilon() -> Self::Epsilon {
-        <f64 as ApproxEq>::default_epsilon()
+        <f64 as AbsDiffEq>::default_epsilon()
     }
 
+    fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.t.abs_diff_eq(&other.t, epsilon)
+            && self.r.abs_diff_eq(&other.r, epsilon)
+            && self.s.abs_diff_eq(&other.s, epsilon)
+    }
+}
+
+impl RelativeEq for DTrs {
     fn default_max_relative() -> Self::Epsilon {
-        <f64 as ApproxEq>::default_max_relative()
-    }
-
-    fn default_max_ulps() -> u32 {
-        <f64 as ApproxEq>::default_max_ulps()
+        <f64 as RelativeEq>::default_max_relative()
     }
 
     fn relative_eq(
@@ -167,6 +181,12 @@ impl ApproxEq for DTrs {
         self.t.relative_eq(&other.t, epsilon, max_relative)
             && self.r.relative_eq(&other.r, epsilon, max_relative)
             && self.s.relative_eq(&other.s, epsilon, max_relative)
+    }
+}
+
+impl UlpsEq for DTrs {
+    fn default_max_ulps() -> u32 {
+        <f64 as UlpsEq>::default_max_ulps()
     }
 
     fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {

@@ -12,8 +12,8 @@ license = "MIT/Apache-2.0"
 edition = "2021"
 
 [dependencies]
-approx = "0.1.1"
-cgmath = "0.16"
+approx = "0.4"
+cgmath = "0.18"
 mint = { optional = true, version = "0.5" }
 
 [features]
